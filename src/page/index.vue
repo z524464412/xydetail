@@ -125,8 +125,8 @@
               <div v-show="productItem.isActive">
                   <div v-for="(product,productindex) in productItem.proComponentItems"
                   :key="productindex"
-                  class="pro-child-item product-info-item" 
-                   >      
+                  class="pro-child-item product-info-item"
+                   >
                   <div class="f14 blue" @click="getProductDetail(product)">
                     {{product.childProductSkuName}}
                   </div>
@@ -136,13 +136,13 @@
                     ref="button"
                     src="@/assets/image/icon_verify.png"
                     @click="showProjectCheckDetail(product)"
-                  > 
+                  >
                   </div>
                 </div>
               </div>
-                
+
               </collapse>
-            
+
           </div>
           <div>
             <!-- -->
@@ -358,7 +358,7 @@
                   </div>
                 </div>
               </div>
-              
+
             </div>
           </div>
           <div class="model-close" @click="showModel(false)">
@@ -382,7 +382,7 @@
       登录
     </span> -->
   </div>
-  
+
 </template>
 
 <script>
@@ -475,7 +475,7 @@ export default {
     };
   },
   created(){
-    
+
   },
   mounted() {
     // 添加监听关闭窗口事件
@@ -514,14 +514,14 @@ export default {
     }else{
       _this.checklogin();
     }
-   
+
     this.code = code;
     this.scrollChange();
     //获取code详情
     this.getCodeDetail();
     // var vibibleState = "";
     // var visibleChange = "";
-    
+
     // if (typeof document.visibilityState != "undefined") {
     //   visibleChange = "visibilitychange";
     //   vibibleState = "visibilityState";
@@ -650,7 +650,7 @@ export default {
       }
       window.history.pushState(state, state.title, state.url)
     },
-    // 显示子材料列表 
+    // 显示子材料列表
     showChildProduct(item, index, arr){
       // console.log(item,index,arr);
        if (item) {
@@ -667,7 +667,7 @@ export default {
     // 显示交易信息校验
     showProjectCheckDetail(project){
       this.modelStatus = 'record';//显示子产品扫码记录
-      this.getSubScanInfoList(project)      
+      this.getSubScanInfoList(project)
     },
     // 获取产品详情
     getSubScanInfoList(project){
@@ -946,7 +946,7 @@ export default {
                     templateObj[proTemplateArr].proComponentItems = templateAll;
                     templateObj[proTemplateArr].isActive = false;
                     templateObj[proTemplateArr].templateName = proTemplateArr;
-                    
+
                   }
                 }
               }
@@ -1146,7 +1146,7 @@ export default {
       position: relative;
       height: 20px;
       top: 6px;
-      
+
     }
   }
   .border-bottom {
@@ -1424,7 +1424,7 @@ export default {
       }
       // @include cl;
       // top: 75px;
-      
+
       .html-title {
         font-size: 18px;
         color: #333;
@@ -1507,7 +1507,7 @@ export default {
 }
 .line-wrap-title{
   font-size: 17px;
-  
+
   color: #0052CC;
 }
 .line-wrap-info{

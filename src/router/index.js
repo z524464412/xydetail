@@ -3,6 +3,8 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import { routerMode } from '../config/env'
 
+import sweepCode from "@/page/sweepCode";
+
 const index = () => import(/* webpackChunkName: "index" */ '@/page/index')
 const dataInfo = () => import(/* webpackChunkName: "dataInfo" */ '@/page/dataInfo')
 const projectDetail = () => import(/* webpackChunkName: "projectDetail" */ '@/page/project/projectDetail');
@@ -20,12 +22,12 @@ export default new Router({
       children:[
       	{
       		path:'',
-      		redirect:'/index'
+      		redirect:'/sweepCode'
       	},
       	{
-	    		path:'/index',
-		    	name:'index',
-		    	component:index,
+	    		path:'/sweepCode',
+		    	name:'sweepCode',
+		    	component:sweepCode,
 		    	meta: {
 		        keepAlive: false // 需要被缓存
 		      }
@@ -62,9 +64,9 @@ export default new Router({
 		        keepAlive: false // 需要被缓存
 		      }
         },
-        
+
       ]
-    }, 
+    },
   ],
   mode:routerMode
 })
