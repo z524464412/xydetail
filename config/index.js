@@ -10,6 +10,15 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
+      '/api': {
+        // target: 'https://xunyuan.materialcircle.com',//接口域名
+        target: 'https://test.materialcircle.com',//接口域名
+        // target: 'http://10.1.11.133:8080',//接口域名
+        changeOrigin: true,//是否跨域
+        pathRewrite: {
+          '^/api': '/api' //需要rewrite重写
+        }
+      },
       '/vip': {
         // target: 'https://xunyuan.materialcircle.com',//接口域名
         target: 'https://test.materialcircle.com',//接口域名

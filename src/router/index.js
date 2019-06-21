@@ -4,6 +4,12 @@ import Router from 'vue-router'
 import { routerMode } from '../config/env'
 
 import sweepCode from "@/page/sweepCode";
+import harmful from "@/page/harmful/harmful";
+import certificate from "@/page/certificate/certificate";
+import video from "@/page/video/video";
+import example from "@/page/example/example"
+import article from "@/page/article/article"
+import knowledge from '@/page/knowledge/knowledge'
 
 const index = () => import(/* webpackChunkName: "index" */ '@/page/index')
 const dataInfo = () => import(/* webpackChunkName: "dataInfo" */ '@/page/dataInfo')
@@ -32,6 +38,54 @@ export default new Router({
 		        keepAlive: false // 需要被缓存
 		      }
 	    	},
+        {
+          path:'/harmful',
+          name:'harmful',
+          component:harmful,
+          meta: {
+            keepAlive: false // 需要被缓存
+          }
+        },
+        {
+          path:'/certificate',
+          name:'certificate',
+          component:certificate,
+          meta: {
+            keepAlive: false // 需要被缓存
+          }
+        },
+        {
+          path:'/video',
+          name:'video',
+          component:video,
+          meta: {
+            keepAlive: false // 需要被缓存
+          }
+        },
+        {
+          path:"/example",
+          name:'example',
+          component:example,
+          meta:{
+            keepAlive: false // 需要被缓存
+          }
+        },
+        {
+          path:"/article",
+          name:'productArticle',
+          component:article,
+          meta:{
+            keepAlive: false // 需要被缓存
+          }
+        },
+        {
+          path:"/knowledge",
+          name:'knowledge',
+          component:knowledge,
+          meta:{
+            keepAlive: false // 需要被缓存
+          }
+        },
 	    	{
 	    		path:'/dataInfo',
 		    	name:'dataInfo',
@@ -63,7 +117,7 @@ export default new Router({
           meta: {
 		        keepAlive: false // 需要被缓存
 		      }
-        },
+        }
 
       ]
     },

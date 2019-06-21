@@ -381,6 +381,9 @@
     <!-- <span @click="logined()">
       登录
     </span> -->
+    <div>
+
+    </div>
   </div>
 
 </template>
@@ -470,7 +473,6 @@ export default {
       pdfUrl: "",
       checkOne: true, //只执行一次
       htmlContentType:'recordList',//弹框内容显示类型 1.'recordList:校验交易记录' 2.'reportCompanyDetail:检测机构'
-
       proTemplateArr:'',//子组件模板数组
     };
   },
@@ -479,7 +481,7 @@ export default {
   },
   mounted() {
     // 添加监听关闭窗口事件
-    let storageSubscribe =   getStorage('subscribe');
+    let storageSubscribe = getStorage('subscribe');
     let _this = this;
     this.platform = init_platform();
     console.log(this.platform);

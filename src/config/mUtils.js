@@ -55,16 +55,16 @@ export const removeStorage = name => {
 export const getStyle = (element, attr, NumberMode = 'int') => {
     let target;
     // scrollTop 获取方式不同，没有它不属于style，而且只有document.body才能用
-    if (attr === 'scrollTop') { 
+    if (attr === 'scrollTop') {
         target = element.scrollTop;
     }else if(element.currentStyle){
-        target = element.currentStyle[attr]; 
-    }else{ 
-        target = document.defaultView.getComputedStyle(element,null)[attr]; 
+        target = element.currentStyle[attr];
+    }else{
+        target = document.defaultView.getComputedStyle(element,null)[attr];
     }
     //在获取 opactiy 时需要获取小数 parseFloat
     return  NumberMode == 'float'? parseFloat(target) : parseInt(target);
-} 
+}
 
 /**
  * 页面到达底部，加载更多
@@ -99,7 +99,7 @@ export const loadMore = (element, callback) => {
        	oldScrollTop = document.body.scrollTop;
        	moveEnd();
     },{passive: true})
-    
+
     const moveEnd = () => {
         requestFram = requestAnimationFrame(() => {
             if (document.body.scrollTop != oldScrollTop) {
@@ -144,7 +144,7 @@ export const showBack = callback => {
         oldScrollTop = document.body.scrollTop;
         moveEnd();
     },{passive: true})
-    
+
     const moveEnd = () => {
         requestFram = requestAnimationFrame(() => {
             if (document.body.scrollTop != oldScrollTop) {
@@ -196,7 +196,7 @@ export const animate = (element, target, duration = 400, mode = 'ease-out', call
 
     //获取dom样式
     const attrStyle = attr => {
-        if (attr === "opacity") { 
+        if (attr === "opacity") {
             return Math.round(getStyle(element, attr, 'float') * 100);
         } else {
             return getStyle(element, attr);
@@ -238,7 +238,7 @@ export const animate = (element, target, duration = 400, mode = 'ease-out', call
             let speedBase = 0; //目标点需要减去的基础值，三种运动状态的值都不同
             let intervalTime; //将目标值分为多少步执行，数值越大，步长越小，运动时间越长
             switch(mode){
-                case 'ease-out': 
+                case 'ease-out':
                     speedBase = iCurrent;
                     intervalTime = duration*5/400;
                     break;
@@ -253,7 +253,7 @@ export const animate = (element, target, duration = 400, mode = 'ease-out', call
                     break;
                 default:
                     speedBase = iCurrent;
-                    intervalTime = duration*5/400; 
+                    intervalTime = duration*5/400;
             }
             if (mode !== 'ease-in') {
                 iSpeed = (target[attr] - speedBase) / intervalTime;
@@ -261,8 +261,8 @@ export const animate = (element, target, duration = 400, mode = 'ease-out', call
             }
             //判断是否达步长之内的误差距离，如果到达说明到达目标点
             switch(mode){
-                case 'ease-out': 
-                    status = iCurrent != target[attr]; 
+                case 'ease-out':
+                    status = iCurrent != target[attr];
                     break;
                 case 'linear':
                     status = Math.abs(Math.abs(iCurrent) - Math.abs(target[attr])) > Math.abs(iSpeed);
@@ -271,11 +271,11 @@ export const animate = (element, target, duration = 400, mode = 'ease-out', call
                     status = Math.abs(Math.abs(iCurrent) - Math.abs(target[attr])) > Math.abs(iSpeed);
                     break;
                 default:
-                    status = iCurrent != target[attr]; 
+                    status = iCurrent != target[attr];
             }
 
             if (status) {
-                flag = false; 
+                flag = false;
                 //opacity 和 scrollTop 需要特殊处理
                 if (attr === "opacity") {
                     element.style.filter = "alpha(opacity:" + (iCurrent + iSpeed) + ")";
@@ -311,8 +311,8 @@ let shareOpt = {
   desc:'',
   link:'',
   icon:''
-} 
- 
+}
+
 export {shareOpt}
 //初始化微信
 
@@ -323,10 +323,10 @@ export function wxReady(){
         title: shareOpt.title, // 分享标题
         link: shareOpt.link, // 分享链接
         imgUrl: shareOpt.icon, // 分享图标
-        success: function () { 
+        success: function () {
           _czc.push(['_trackEvent', '邀请好友', '分享', '分享朋友圈']);
         },
-        cancel: function () { 
+        cancel: function () {
           _czc.push(['_trackEvent', '邀请好友', '分享', '取消分享朋友圈']);
         }
       });
@@ -335,10 +335,10 @@ export function wxReady(){
         desc: shareOpt.desc, // 分享描述
         link: shareOpt.link, // 分享链接
         imgUrl: shareOpt.icon, // 分享图标
-        success: function () { 
+        success: function () {
           _czc.push(['_trackEvent', '邀请好友', '分享', '分享微信好友']);
         },
-        cancel: function () { 
+        cancel: function () {
           _czc.push(['_trackEvent', '邀请好友', '分享', '取消分享微信好友']);
             }
           });
@@ -366,20 +366,20 @@ export function getNextDay(){
   return s3;
 }
 //获取当月日期
-export function getMonth(Fn) { 
-    // 获取当前月的第一天    
-    let start = new Date();    
+export function getMonth(Fn) {
+    // 获取当前月的第一天
+    let start = new Date();
     start.setDate(1);
-    // 获取当前月的最后一天    
-    let date = new Date();    
-    let currentMonth = date.getMonth();    
-    let nextMonth = ++currentMonth;    
-    let nextMonthFirstDay = new Date(date.getFullYear(), nextMonth, 1);    
-    let oneDay = 1000 * 60 * 60 * 24;    
+    // 获取当前月的最后一天
+    let date = new Date();
+    let currentMonth = date.getMonth();
+    let nextMonth = ++currentMonth;
+    let nextMonthFirstDay = new Date(date.getFullYear(), nextMonth, 1);
+    let oneDay = 1000 * 60 * 60 * 24;
     let end = new Date(nextMonthFirstDay - oneDay);
-    let startDate = transferDate(start); // 日期变换    
-    let endDate = transferDate(end); // 日期变换    
-    return startDate + '~' + endDate;    
+    let startDate = transferDate(start); // 日期变换
+    let endDate = transferDate(end); // 日期变换
+    return startDate + '~' + endDate;
 }
 //获取当前年
 export function getNowYear(){
@@ -393,58 +393,58 @@ export function getNowYear(){
 
 //获取周日期格式
 export function getWeek(Fn) {
-    //按周日为一周的最后一天计算    
-    let date = new Date();    
-    //今天是这周的第几天    
-    let today = date.getDay();    
-    //上周日距离今天的天数（负数表示）    
-    let stepSunDay = -today + 1;    
-    // 如果今天是周日    
-    if (today == 0) {    
-    
-        stepSunDay = -7;    
-    }    
-    // 周一距离今天的天数（负数表示）    
-    let stepMonday = 7 - today;    
-    let time = date.getTime();    
-    let monday = new Date(time + stepSunDay * 24 * 3600 * 1000);    
-    let sunday = new Date(time + stepMonday * 24 * 3600 * 1000);    
-    //本周一的日期 （起始日期）    
-    let startDate = transferDate(monday); // 日期变换    
-    //本周日的日期 （结束日期）    
-    let endDate = transferDate(sunday); // 日期变换    
-    return startDate + '~' + endDate;    
+    //按周日为一周的最后一天计算
+    let date = new Date();
+    //今天是这周的第几天
+    let today = date.getDay();
+    //上周日距离今天的天数（负数表示）
+    let stepSunDay = -today + 1;
+    // 如果今天是周日
+    if (today == 0) {
+
+        stepSunDay = -7;
+    }
+    // 周一距离今天的天数（负数表示）
+    let stepMonday = 7 - today;
+    let time = date.getTime();
+    let monday = new Date(time + stepSunDay * 24 * 3600 * 1000);
+    let sunday = new Date(time + stepMonday * 24 * 3600 * 1000);
+    //本周一的日期 （起始日期）
+    let startDate = transferDate(monday); // 日期变换
+    //本周日的日期 （结束日期）
+    let endDate = transferDate(sunday); // 日期变换
+    return startDate + '~' + endDate;
 }
 //改变时间格式
 export function getTaskTime(strDate) {
-  var date = new Date(strDate);  
-  var y = date.getFullYear();   
-  var m = date.getMonth() + 1;    
-  m = m < 10 ? ('0' + m) : m;    
-  var d = date.getDate();    
-  d = d < 10 ? ('0' + d) : d;    
-  var h = date.getHours();    
-  var minute = date.getMinutes();    
-  minute = minute < 10 ? ('0' + minute) : minute;  
-  // var str = y+"-"+m+"-"+d+" "+h+":"+minute;  
-  var str = y+"-"+m+"-"+d;  
-  return str;  
+  var date = new Date(strDate);
+  var y = date.getFullYear();
+  var m = date.getMonth() + 1;
+  m = m < 10 ? ('0' + m) : m;
+  var d = date.getDate();
+  d = d < 10 ? ('0' + d) : d;
+  var h = date.getHours();
+  var minute = date.getMinutes();
+  minute = minute < 10 ? ('0' + minute) : minute;
+  // var str = y+"-"+m+"-"+d+" "+h+":"+minute;
+  var str = y+"-"+m+"-"+d;
+  return str;
 }
-function transferDate(date) {  
-        // 年    
-    let year = date.getFullYear();    
-    // 月    
-    let month = date.getMonth() + 1;    
-    // 日    
-    let day = date.getDate();    
-    if (month >= 1 && month <= 9) {    
-        month = "0" + month;    
-    }    
-    if (day >= 0 && day <= 9) {    
-        day = "0" + day;    
-    }    
+function transferDate(date) {
+        // 年
+    let year = date.getFullYear();
+    // 月
+    let month = date.getMonth() + 1;
+    // 日
+    let day = date.getDate();
+    if (month >= 1 && month <= 9) {
+        month = "0" + month;
+    }
+    if (day >= 0 && day <= 9) {
+        day = "0" + day;
+    }
     let dateString = year + '-' + month + '-' + day;
-    return dateString;    
+    return dateString;
 }
 /*
 *图片压缩
@@ -487,7 +487,7 @@ export function yasuo(input_file, func) {
   // });
 }
 
-// 
+//
 export function convertBase64UrlToBlob(urlData) {
   // //去掉url的头，并转换为byte
   // var bytes = window.atob(urlData.split(',')[1]);
@@ -575,3 +575,29 @@ export function  getQueryStringByName(name){
     }
     return platform
   }
+
+
+// 对Date的扩展，将 Date 转化为指定格式的String
+// 月(M)、日(d)、小时(h)、分(m)、秒(s)、季度(q) 可以用 1-2 个占位符，
+// 年(y)可以用 1-4 个占位符，毫秒(S)只能用 1 个占位符(是 1-3 位的数字)
+// 例子：
+// (new Date()).Format("yyyy-MM-dd hh:mm:ss.S") ==> 2006-07-02 08:09:04.423
+// (new Date()).Format("yyyy-M-d h:m:s.S")      ==> 2006-7-2 8:9:4.18
+Date.prototype.Format = function(fmt)
+{ //author: meizz
+  var o = {
+    "M+" : this.getMonth()+1,                 //月份
+    "d+" : this.getDate(),                    //日
+    "h+" : this.getHours(),                   //小时
+    "m+" : this.getMinutes(),                 //分
+    "s+" : this.getSeconds(),                 //秒
+    "q+" : Math.floor((this.getMonth()+3)/3), //季度
+    "S"  : this.getMilliseconds()             //毫秒
+  };
+  if(/(y+)/.test(fmt))
+    fmt=fmt.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length));
+  for(var k in o)
+    if(new RegExp("("+ k +")").test(fmt))
+      fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
+  return fmt;
+}

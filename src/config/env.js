@@ -15,15 +15,15 @@ let httpUrl = ''
 switch(process.env.srconfig){
 	//测试环境
 	case 'dev':
-		httpUrl = 'http://10.1.14.47:8080'
+		httpUrl = ''
 		break;
 	//预生产环境
 	case 'beta':
-		httpUrl = 'http://10.1.14.47:8080'
+		httpUrl = 'http://10.1.14.25:9527'
 		break;
 	//生产环境
 	case 'pro':
-		httpUrl = 'http://10.1.14.47:8080'
+		httpUrl = 'http://10.1.14.25:9527'
 		break;
 	//默认开发
 	default:
