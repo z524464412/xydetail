@@ -121,32 +121,6 @@
        */
       checkReport(type, report) {
         let _this = this;
-        let reportUrl = report.url;
-        let form = new FormData();
-        form.append("ossFileKey", reportUrl);
-        let param = new URLSearchParams(form);
-        getPDFURL(param).then(
-          res => {
-            if (res && res.pdfUrl) {
-              // window.location.href=res.pdfUrl;
-              _this.showPdf(res.pdfUrl);
-            } else {
-              Toast({
-                message: "pdf文件为空!",
-                position: "middle",
-                duration: 2000
-              });
-            }
-          },
-          err => {
-            Toast({
-              message: "获取pdf失败",
-              position: "middle",
-              duration: 2000
-            });
-          }
-        );
-        return
         // _this.platform = 'wx';
         // _this.subscribe = 1;
         // console.log(_this.subscribe);
@@ -170,31 +144,7 @@
               _this.showModel(true);
               return;
             } else {
-              let reportUrl = report.url;
-              let form = new FormData();
-              form.append("ossFileKey", reportUrl);
-              let param = new URLSearchParams(form);
-              getPDFURL(param).then(
-                res => {
-                  if (res && res.pdfUrl) {
-                    // window.location.href=res.pdfUrl;
-                    _this.showPdf(res.pdfUrl);
-                  } else {
-                    Toast({
-                      message: "pdf文件为空!",
-                      position: "middle",
-                      duration: 2000
-                    });
-                  }
-                },
-                err => {
-                  Toast({
-                    message: "获取pdf失败",
-                    position: "middle",
-                    duration: 2000
-                  });
-                }
-              );
+              _this.showPdf(res.pdfUrl);
             }
           } else {
             this.titleInfo = "要查看检测报告<br/>请先关注公众号";

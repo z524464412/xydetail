@@ -39,7 +39,7 @@ service.interceptors.response.use(
     const res = response.data
     let {status} = res
     if(status.toLowerCase() === 'success') {
-      return Promise.resolve(res.data)
+      return Promise.resolve(res.data || res)
     } else if (status === 'tokenExpire') {
       auth.createAccessToken()        // 令牌过期，重新请求
       window.location.reload();

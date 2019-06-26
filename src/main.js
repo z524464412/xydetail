@@ -19,6 +19,14 @@ Vue.config.productionTip = false
 Vue.use(MintUI);
 Vue.use(vmodal);
 
+Vue.directive('anchor',{
+  inserted : function(el,binding){
+    el.onclick = function(){
+      document.documentElement.scrollTop = $('#'+binding.value).offset().top - 50
+    }
+  }
+})
+
 if ('addEventListener' in document) {
     document.addEventListener('DOMContentLoaded', function() {
         FastClick.attach(document.body);
@@ -55,9 +63,9 @@ new Vue({
   },
   template: '<App/>',
   created() {
-    // 
+    //
   },
   mounted: function () {
-    
+
   }
 })

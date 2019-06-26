@@ -93,7 +93,14 @@
   }
   .top-box div{
     height: 295px;
+    /*! autoprefixer: off */
     background: linear-gradient(top,rgba(255,255,255,0) 0%,rgba(0,82,204,1) 100%);
+    background: -moz-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(0,82,204,1) 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,0)), color-stop(100%,rgba(0,82,204,1)));
+    background: -webkit-linear-gradient(top, rgba(255,255,255,0) 0%,rgba(0,82,204,1) 100%);
+    background: -o-linear-gradient(top, rgba(255,255,255,0) 0%,rgba(0,82,204,1) 100%);
+    background: -ms-linear-gradient(top, rgba(255,255,255,0) 0%,rgba(0,82,204,1) 100%);
+    /* autoprefixer: on */
     position: relative;
     top: 0px;
     height: 295px;

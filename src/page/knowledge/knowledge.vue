@@ -58,6 +58,7 @@
     background-color: #fff;
   }
   .knowledge-box p{
+    font-size: 4.5vw;
     padding: 11px 15px;
   }
   .knowledge-box p:nth-child(n+2){

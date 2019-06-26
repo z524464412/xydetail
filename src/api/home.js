@@ -18,9 +18,8 @@ export function getProductBySkuId(skuId) {
  */
 export function getwxcode(param) {
   return request({
-    url: '/vip/wxcode.htm',
+    url: '/vip/wxcode.htm?code=' + param,
     method: 'get',
-    param
   })
 }
 
@@ -110,6 +109,17 @@ export function getKnowledgeListBySkuId(skuId) {
 export function getMakeupsBySkuId(skuId) {
   return request({
     url: '/api/v1/products/makeups?skuId=' + skuId,
+    method: 'get',
+  })
+}
+
+/**
+ * 根据code查询skuId
+ * @param skuId
+ */
+export function getSkuIdByCode(code) {
+  return request({
+    url: '/api/v1/products/getSkuIdByXyCode?xyCode=' + code,
     method: 'get',
   })
 }

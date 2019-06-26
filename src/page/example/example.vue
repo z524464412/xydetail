@@ -3,6 +3,7 @@
     <div class="case-presentation" v-for="(casesItem,casesIndex) in casesList" @click="casesTo(casesItem)">
       <img :src="casesItem.abb" alt="">
       <p>{{casesItem.title}}</p>
+      <div></div>
     </div>
   </div>
 </template>
@@ -48,6 +49,7 @@
 
 <style scoped>
   .container{
+    position: absolute;
     padding: 15px;
   }
   .container > div{
@@ -65,6 +67,16 @@
     width: 185px;
     border-radius: 5px;
   }
+  .case-presentation div{
+    height: 40px;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    width: 100%;
+    background-color: #000;
+    opacity: .4;
+    border-radius: 0px 0px 5px 5px;
+  }
   .case-presentation p{
     font-size:16px;
     font-family:PingFang SC;
@@ -78,5 +90,6 @@
     overflow: hidden;
     text-overflow: ellipsis;
     width: calc(100% - 30px);
+    z-index: 99;
   }
 </style>

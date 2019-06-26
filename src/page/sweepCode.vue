@@ -1,12 +1,12 @@
 <template>
-  <div class="container">
+  <div id="scrollBox" class="container">
     <!--轮播图-->
     <div class="swiper-container" style="height: 310px;">
       <img class="vr" src="../../static/images/vr.png" alt="">
       <div class="swiper-wrapper">
         <div v-for="(bannerItem,bannerIndex) in bannerList" class="swiper-slide" style="position: relative;">
           <img style="height: 100%;" :src="bannerItem.url" alt="">
-          <img class="product-logo" src="../../static/images/product-logo.png" alt="">
+          <img class="product-logo" :src="supplier.logoUrl" alt="">
         </div>
       </div>
       <div class="swiper-pagination"></div>
@@ -29,7 +29,7 @@
     </div>
     <!--认证图标-->
     <!--健康危害评价-->
-    <div class="module-box" style="margin-top: 8px;">
+    <div id="healthy" class="module-box" style="margin-top: 8px;">
       <div class="title-box">
         <div class="title-left">
           <img style="width: 18px;height: 16px;" src="../../static/images/heart.png" alt="">
@@ -40,71 +40,36 @@
           <p>了解如何评价</p>
         </div>
       </div>
-      <div class="healthy-header">
-        <p>产品组分</p>
-        <p>健康危害标签</p>
+      <div class="no-data" v-if="productInfo.grade === 'White' || productInfo.grade === 'NA'">
+        <img style="width: 105px;height: 100px;" src="../../static/images/no-data.png" alt="">
+        <p>本产品不参与健康评价</p>
       </div>
-      <div class="healthy-content" v-if="healthAssessmentList.type === '2'">
-        <p>{{productInfo.name}}</p>
-        <div><p :style="changeColor(productInfo.grade)">{{productInfo.grade}}</p></div>
-      </div>
-      <div
-        class="product-info-item"
-        v-for="(proItem,index) in healthAssessmentList.proComponent"
-        :key="index"
-        v-else
-      >
-        <div class="product-info-child-box">
-          <span @click="showChildProduct(proItem,index,healthAssessmentList.proComponent)">{{proItem.componentName}}</span>
-          <img
-            class="product-info-item-icon"
-            ref="button"
-            v-show="proItem.isActive"
-            src="@/assets/image/icon_roundreduce.png"
-            @click="showChildProduct(proItem,index,healthAssessmentList.proComponent)"
-          >
-          <img
-            class="product-info-item-icon"
-            ref="button"
-            v-show="!proItem.isActive"
-            src="@/assets/image/icon_roundadd.png"
-            @click="showChildProduct(proItem,index,healthAssessmentList.proComponent)"
-          >
-          <collapse>
-            <div v-show="proItem.isActive">
-              <div v-for="(product,productindex) in proItem.health_assessment"
-                   :key="productindex"
-                   class="pro-child-item product-info-item"
-              >
-                <div class="f14 blue" @click="getProductDetail(product)">
-                </div>
-                <div>
-                  <img
-                    class="product-info-checked"
-                    ref="button"
-                    src="@/assets/image/icon_verify.png"
-                    @click="showProjectCheckDetail(product)"
-                  >
-                </div>
-              </div>
+      <div v-else>
+        <div class="healthy-content">
+          <div style="height: 120px;display: flex;flex-direction: column;justify-content: center;">
+            <p v-if="productInfo.grade === 'Green'">健康安全的材料，可以放心使用</p>
+            <p v-else-if="productInfo.grade === 'Yellow' || productInfo.grade === 'YellowDG'">可使用，建议更环保的替代材料</p>
+            <p v-else-if="productInfo.grade === 'Red' || productInfo.grade === 'RedDG'">在选材时应尽量避免该类材料</p>
+            <div class="healthy-report"
+                 @click="checkReport('report',healthAssessment)">
+              <p>查看健康危害评价报告</p>
+              <img style="width: 6px;height: 10px;" src="../../static/images/arrow-right.png" alt="">
             </div>
-
-          </collapse>
-
+          </div>
+          <img v-if="productInfo.grade === 'Green'" src="../../static/images/good.png" alt="">
+          <img v-else-if="productInfo.grade === 'Yellow' || productInfo.grade === 'YellowDG'" src="../../static/images/caution.png" alt="">
+          <img v-else-if="productInfo.grade === 'Red' || productInfo.grade === 'RedDG'" src="../../static/images/avoid.png" alt="">
         </div>
-        <div>
-          <!-- -->
+        <div class="healthy-notes">
+          <li>• 绿色：健康安全的材料，可以放心使用；</li>
+          <li>• 黄色：可使用，建议更环保的替代材料；</li>
+          <li>• 红色：在选材时应尽量避免该类材料；</li>
         </div>
-      </div>
-      <div class="healthy-notes">
-        <li>• 绿色：健康安全的材料，可以放心使用；</li>
-        <li>• 黄色：可使用，建议更环保的替代材料；</li>
-        <li>• 红色：在选材时应尽量避免该类材料；</li>
       </div>
     </div>
     <!--健康危害评价-->
     <!--有害物质检测-->
-    <div class="module-box">
+    <div id="harmful" class="module-box">
       <div class="title-box">
         <div class="title-left">
           <img style="width: 18px;height: 18px;" src="../../static/images/harmful.png" alt="">
@@ -123,7 +88,9 @@
           <p>单位</p>
           <p>合格</p>
         </div>
-        <div class="from-content" v-for="(harmfulItem,harmfulIndex) in harmfulList" v-if="harmfulIndex < toShow">
+        <div class="from-content"
+             v-for="(harmfulItem,harmfulIndex) in harmfulList"
+             v-if="harmfulIndex < toShow && harmfulItem.testVal">
           <p>{{harmfulItem.name}}</p>
           <p>{{harmfulItem.rohsValGB}}</p>
           <p>{{harmfulItem.testVal}}</p>
@@ -147,7 +114,7 @@
     </div>
     <!--有害物质检测-->
     <!--认证证书-->
-    <div class="module-box">
+    <div id="authentication" class="module-box">
       <div class="title-box">
         <div class="title-left">
           <img style="width: 16px;height: 20px;" src="../../static/images/certificate.png" alt="">
@@ -173,7 +140,7 @@
     </div>
     <!--认证证书-->
     <!--为什么喜欢-->
-    <div class="module-box">
+    <div id="like" class="module-box">
       <div class="title-box">
         <div class="title-left">
           <img style="width: 18px;height: 18px;" src="../../static/images/like.png" alt="">
@@ -190,7 +157,7 @@
     </div>
     <!--为什么喜欢-->
     <!--产品信息-->
-    <div class="module-box">
+    <div id="product" class="module-box">
       <div class="title-box">
         <div class="title-left">
           <img style="width: 18px;height: 18px;" src="../../static/images/info.png" alt="">
@@ -222,15 +189,18 @@
           <p>所属类别:</p>
           <p>{{productInfo.categoryName}}</p>
         </div>
-        <div class="product-attribute">
-          <p>生产工厂:</p>
-          <p>{{productInfo.factory}}</p>
+        <div style="display: flex;">
+          <p class="product-model-text product-model-title">生产工厂:</p>
+          <div style="width: calc(100% - 90px);">
+            <p class="product-model-text product-model-content"
+               v-for="factoryItem in productInfo.factory">{{factoryItem.name}}</p>
+          </div>
         </div>
       </div>
     </div>
     <!--产品信息-->
     <!--相关视频-->
-    <div class="module-box">
+    <div id="video" class="module-box">
       <div class="title-box">
         <div class="title-left">
           <img style="width: 21px;height: 16px;" src="../../static/images/video.png" alt="">
@@ -251,7 +221,7 @@
     </div>
     <!--相关视频-->
     <!--案例展示-->
-    <div class="module-box">
+    <div id="case" class="module-box">
       <div class="title-box">
         <div class="title-left">
           <img style="width: 15px;height: 18px;" src="../../static/images/cases.png" alt="">
@@ -266,6 +236,7 @@
         <div class="case-presentation" v-for="(casesItem,casesIndex) in casesList" @click="casesTo(casesItem)">
           <img :src="casesItem.abb" alt="">
           <p>{{casesItem.title}}</p>
+          <div></div>
         </div>
       </div>
     </div>
@@ -274,7 +245,7 @@
     <img class="botton-banner" src="../../static/images/botton-banner.png" alt="">
     <!--广告位（一张图）-->
     <!--科普知识-->
-    <div class="module-box">
+    <div id="knowledge" class="module-box">
       <div class="title-box">
         <div class="title-left">
           <img style="width: 15px;height: 18px;" src="../../static/images/article.png" alt="">
@@ -295,13 +266,13 @@
     </div>
     <!--科普知识-->
     <!--点击进入公众号-->
-    <div class="module-box" style="min-height: auto;"  @click="checkReport('wxapp')">
+    <div class="module-box" style="min-height: auto;margin-bottom: 20px;"  @click="checkReport('wxapp')">
       <div class="title-box">
         <div class="title-left">
           <img style="width: 24px;height: 24px;" src="../../static/images/user.png" alt="">
           <div class="user-number" style="margin-left: 11px;">
             <p>你当前是第 {{browserCount}} 位扫码查验者</p>
-            <p>点击进入循源公众号了解更多</p>
+            <p>扫码关注公众号了解更多</p>
           </div>
         </div>
         <div class="title-right">
@@ -342,13 +313,36 @@
             <p>所属类别:</p>
             <p>{{productInfo.categoryName}}</p>
           </div>
-          <div class="product-attribute">
-            <p>生产工厂:</p>
-            <p>{{productInfo.factory}}</p>
+          <div style="display: flex;">
+            <p class="product-model-text product-model-title">生产工厂:</p>
+            <div style="width: calc(100% - 90px);">
+              <p class="product-model-text product-model-content"
+                 v-for="factoryItem in productInfo.factory">{{factoryItem.name}}</p>
+            </div>
           </div>
           <div class="product-attribute">
             <p>产品描述:</p>
-            <p>{{productInfo.desc}}</p>
+            <p class="product-attribute-content">{{productInfo.desc}}</p>
+          </div>
+          <div style="display: flex;">
+            <p class="product-model-text product-model-title">原材料组成：</p>
+            <div class="product-attribute-content" style="width: calc(100% - 90px);"
+                 v-if="healthAssessment.type === '2'">
+              <p class="product-model-text product-model-content"
+                 v-for="(model) in healthAssessment.modelList"
+                 v-if="model.harmLabel">
+                {{model.makeUp}}
+              </p>
+            </div>
+            <div class="product-attribute-content" style="width: calc(100% - 90px);"
+                 v-else>
+              <p class="product-model-text product-model-content"
+                 style="color: #0052CCFF"
+                 v-for="(model) in healthAssessment.modelList"
+                 @click="toProduct(model.childProductSkuID)">
+                {{model.childProductSkuName}}
+              </p>
+            </div>
           </div>
         </div>
       </mt-popup>
@@ -401,6 +395,53 @@
 
     <!-- 弹框容器 -->
 
+    <!--顶部导航栏-->
+    <div class="navigation-bar" v-if="showNavigation">
+      <div id="navigation" style="height: 44px;">
+        <div v-for="(navigation,index) in navigationList"
+             @click="navigationIndex = index"
+             v-anchor="modelList(index)">
+          <p>{{navigation.name}}</p>
+          <div v-if="navigationIndex === index" class="navigation-bar-selected"></div>
+        </div>
+      </div>
+      <div @click="showIcon()">
+        <img style="width: 16px;height: 16px;" src="../../static/images/application.png" alt="">
+      </div>
+    </div>
+    <div class="navigation-icon-box" v-if="showNavigationIcon">
+      <div v-for="(navigation,index) in navigationList"
+           class="navigation-box"
+           v-anchor="modelList(index)">
+        <div v-if="index === 0" class="navigation-icon" style="padding: 16px 14px 14px">
+          <img style="width: 22px;height: 19px;" :src="navigation.img" alt="">
+        </div>
+        <div v-if="index === 1" class="navigation-icon" style="padding: 15px">
+          <img style="width: 20px;height: 20px;" :src="navigation.img" alt="">
+        </div>
+        <div v-if="index === 2" class="navigation-icon" style="padding: 13px 16px 14px">
+          <img style="width: 18px;height: 23px;" :src="navigation.img" alt="">
+        </div>
+        <div v-if="index === 3" class="navigation-icon" style="padding: 15px">
+          <img style="width: 20px;height: 20px;" :src="navigation.img" alt="">
+        </div>
+        <div v-if="index === 4" class="navigation-icon" style="padding: 15px 14px 14px 15px">
+          <img style="width: 21px;height: 21px;" :src="navigation.img" alt="">
+        </div>
+        <div v-if="index === 5" class="navigation-icon" style="padding: 16px 13px 15px 13px">
+          <img style="width: 24px;height: 19px;" :src="navigation.img" alt="">
+        </div>
+        <div v-if="index === 6" class="navigation-icon" style="padding: 15px 16px 14px 16px">
+          <img style="width: 18px;height: 21px;" :src="navigation.img" alt="">
+        </div>
+        <div v-if="index === 7" class="navigation-icon" style="padding: 15px">
+          <img style="width: 19px;height: 20px;" :src="navigation.img" alt="">
+        </div>
+        <p>{{navigation.name}}</p>
+      </div>
+    </div>
+    <div class="mask"  v-if="showNavigationIcon" @click="showIcon()"></div>
+    <!--顶部导航栏-->
   </div>
 </template>
 
@@ -427,7 +468,8 @@
     getProductBySkuId,
     getwxcode,
     getProductInfoBySkuId,
-    getMakeupsBySkuId} from "@/api/home"
+    getMakeupsBySkuId,
+    getSkuIdByCode} from "@/api/home"
   import {
     setStorage,
     getStorage,
@@ -438,9 +480,9 @@
     getQueryByName,
     getQueryStringByName,
     escape2Html,
+    animate,
     init_platform //判断什么设备
   } from "@/config/mUtils";
-  import collapse from "@/components/common/collapse.js";
   import { Toast } from 'mint-ui';
   import {getPDFURL} from '@/utils/auth'
   import qrcode from "@/assets/image/icon_qrcode.png";
@@ -489,29 +531,86 @@
         titleInfo: "", //弹框文本显示值
         modelStatus:'default',//默认显示弹框
         htmlTitle: "", //html头部显示文本
-        healthAssessmentList:{},        // 健康危害list
+        healthAssessment:{},        // 健康危害
+        supplier:{},                //
         browserCount:0,                 // 浏览次数
+        navigationList:[
+          {
+            name:'健康危害评价',
+            img:require("../../static/images/heart.png"),
+          },
+          {
+            name:'有害物质检测',
+            img:require("../../static/images/harmful.png")
+          },
+          {
+            name:'认证证书',
+            img:require("../../static/images/certificate.png")
+          },
+          {
+            name:'为什么喜欢',
+            img:require("../../static/images/like.png")
+          },
+          {
+            name:'产品信息',
+            img:require("../../static/images/info.png")
+          },
+          {
+            name:'相关视频',
+            img:require("../../static/images/video.png")
+          },
+          {
+            name:'案例',
+            img:require("../../static/images/cases.png")
+          },
+          {
+            name:'科普知识',
+            img:require("../../static/images/article.png")
+          },
+        ],
+        navigationIndex:0,
+        showNavigation:false,       // 显示导航栏
+        showNavigationIcon:false,       // 显示导航栏图标
     }
     },
     created() {
+      document.querySelector('html').setAttribute('style', 'background-color:#f3f5f9;background:#f3f5f9;padding-bottom:20px;scroll-behavior: smooth;')
+    },
+    mounted(){
       let _this = this;
       let code = getQueryStringByName("c");
+      let id = getQueryStringByName("id");
       if (code) {
-        code = code.split("/")[0];
+        getSkuIdByCode(code)
+          .then((res)=>{
+            _this.skuId = res.skuId;
+            //获取code详情
+            this.getCodeDetail();
+            //获取产品详情
+            this.getProductInfo();
+          })
+          .catch(err=>console.log(err))
+      }else{
+        this.skuId = id;
+        //获取code详情
+        this.getCodeDetail();
+        //获取产品详情
+        this.getProductInfo();
       }
       this.tokencode = getQueryStringByName("code");
+      console.log(this.tokencode)
       if (this.tokencode) {
         let param = {
           code:this.tokencode
         };
-        getwxcode(param).then(
-          res => {
+        getwxcode(this.tokencode).then(
+          (res) => {
             console.log('resdata',res);
             if (res && res.baseUserInfo && res.baseUserInfo.subscribe == 1) {
               _this.subscribe = 1;
               let stateObj = {};
               let title = "修改地址";
-              let newUrl = location.pathname + "?c=" + code+'#/index';
+              let newUrl = location.pathname + "?c=" + code;
               history.pushState(stateObj, title, newUrl);
               _this.logined();
             } else {
@@ -520,6 +619,7 @@
               let title = "修改地址";
               let newUrl = location.pathname + "?c=" + code;
               history.pushState(stateObj, title, newUrl);
+              removeStorage('subscribe');
             }
           },
           err => {}
@@ -527,23 +627,51 @@
       }else{
         _this.checklogin();
       }
-      this.skuId = code;
-      // this.scrollChange();
-      //获取code详情
-      this.getCodeDetail();
-      //获取产品详情
-      this.getProductInfo();
-    },
-    mounted(){
+      if ($(window).scrollTop() > 388) {
+        this.showNavigation = true;
+      } else {
+        this.showNavigation = false;
+      }
+      this.scrollChange();
+      var vibibleState = "";
+      var visibleChange = "";
 
+      if (typeof document.visibilityState != "undefined") {
+        visibleChange = "visibilitychange";
+        vibibleState = "visibilityState";
+      } else if (typeof document.webkitVisibilityState != "undefined") {
+        visibleChange = "webkitvisibilitychange";
+        vibibleState = "webkitVisibilityState";
+      }
+      if (visibleChange) {
+        document.addEventListener(visibleChange, function(e) {
+          if (document[vibibleState] == "visible") {
+            _this.checklogin()
+          }
+        });
+      }
     },
     components:{
-      collapse
+
+    },
+    computed:{
+      subscribe:{
+        get(){
+          return this.$store.state.subscribeType
+        },
+        set(val){
+          this.$store.state.subscribeType = val
+        }
+      },
     },
     methods: {
       ...mapMutations([
         'CHANGE_SUBSCRIBE'
       ]),
+      modelList(index){
+        let aa = ['healthy','harmful','authentication','like', 'product', 'video', 'case','knowledge']
+        return aa[index];
+      },
 
       logined(){
         this.CHANGE_SUBSCRIBE(1);
@@ -599,7 +727,8 @@
         getProductBySkuId(this.skuId)
           .then(res => {
             let { pictures,item_to_show,harmful,certificates,cases,videos,articles,
-              description,features,health_assessment,browserCount} = res.products;
+              description,features,health_assessment,browserCount,supplier} = res.products;
+            let healthAssessment = {};
             that.browserCount = browserCount || 1; // 扫码次数
             that.bannerList = pictures;   // banner轮播图
             that.toShow = item_to_show;   // 最多显示
@@ -609,8 +738,22 @@
             that.casesList = cases;       // 案例list
             that.videoList = videos;      // 视频list
             that.articlesList = articles; // 文章list
-            console.log("health_assessment",health_assessment);
-            that.healthAssessmentList = health_assessment;
+            that.supplier = supplier;
+            //type:1-定制家具，2-标准品
+            if(health_assessment.type === '2'){
+              healthAssessment = {
+                modelList:health_assessment.health_assessment.chemistryMatter,
+                url:health_assessment.reports.length > 0 && health_assessment.reports[0].url,
+                type:health_assessment.type
+              }
+            }else{
+              healthAssessment = {
+                modelList:health_assessment.proComponentExtJson,
+                url:health_assessment.proComponent[0].reports[0].url,
+                type:health_assessment.type
+              }
+            }
+            that.healthAssessment = healthAssessment;
             // 初始化轮播图
             this.intSwpier();
             features && (that.like = escape2Html(features).replace(/<img\b[^>]*>/g, ""));   // 将img标签去掉
@@ -691,31 +834,7 @@
               _this.showModel(true);
               return;
             } else {
-              let reportUrl = report.url;
-              let form = new FormData();
-              form.append("ossFileKey", reportUrl);
-              let param = new URLSearchParams(form);
-              getPDFURL(param).then(
-                res => {
-                  if (res && res.pdfUrl) {
-                    // window.location.href=res.pdfUrl;
-                    _this.showPdf(res.pdfUrl);
-                  } else {
-                    Toast({
-                      message: "pdf文件为空!",
-                      position: "middle",
-                      duration: 2000
-                    });
-                  }
-                },
-                err => {
-                  Toast({
-                    message: "获取pdf失败",
-                    position: "middle",
-                    duration: 2000
-                  });
-                }
-              );
+              _this.showPdf(report.url);
             }
           } else {
             this.titleInfo = "要查看检测报告<br/>请先关注公众号";
@@ -737,9 +856,11 @@
        */
       showModel(type, item) {
         if (type) {
+          document.querySelector('html').setAttribute('style', 'background-color:#f3f5f9;background:#f3f5f9;padding-bottom:20px;')
           this.openModal();
         } else {
           this.closeModal();
+          document.querySelector('html').setAttribute('style', 'background-color:#f3f5f9;background:#f3f5f9;padding-bottom:20px;scroll-behavior: smooth;')
         }
       },
 
@@ -767,6 +888,7 @@
       },
 
       showPdf(url) {
+        console.log("url",url);
         let newUrl = url.split("com")[1];
         this.$router.push({ name: "pdf", query: { url: Base64.encode(newUrl) } });
       },
@@ -791,7 +913,79 @@
         this.$set(arr, index, item)
       },
 
-    }
+
+      toProduct(id){
+        let { search ,origin,hash,pathname} = window.location;
+        let searchList = search.split("&");
+        searchList[0] = '?id=' + id;
+        window.location.href = origin + pathname + searchList.join("&") + hash;
+      },
+
+
+      /**
+       * 滚动条监听
+       */
+      scrollChange() {
+        let that = this;
+        let { navigationList } = this;
+        $(window).scroll(function() {
+          let isShowNav,index;
+          let healthyTop = document.getElementById('healthy').offsetTop,
+            harmfulTop = document.getElementById('harmful').offsetTop,
+            authenticationTop = document.getElementById('authentication').offsetTop,
+            likeTop = document.getElementById('like').offsetTop,
+            productTop = document.getElementById('product').offsetTop,
+            videoTop = document.getElementById('video').offsetTop,
+            caseTop = document.getElementById('case').offsetTop,
+            knowledgeTop = document.getElementById('knowledge').offsetTop;
+          if ($(window).scrollTop() > (healthyTop - 60)) {
+            isShowNav = true;
+          } else {
+            // isShowNav = false;
+          }
+          if(that.showNavigation != isShowNav){
+            that.showNavigation = isShowNav
+            console.log("isShowNav",that.showNavigation);
+          }
+          if($(window).scrollTop() < (harmfulTop - 60)){
+            index = 0;
+          }else if($(window).scrollTop() >= (harmfulTop - 60) && $(window).scrollTop() < (authenticationTop - 60)){
+            index = 1;
+          }else if($(window).scrollTop() >= (authenticationTop - 60) && $(window).scrollTop() < (likeTop - 60)){
+            index = 2;
+          }else if($(window).scrollTop() >= (likeTop - 60) && $(window).scrollTop() < (productTop - 60)){
+            index = 3;
+          }else if($(window).scrollTop() >= (productTop - 60) && $(window).scrollTop() < (videoTop - 60)){
+            index = 4;
+          }else if($(window).scrollTop() >= (videoTop - 60) && $(window).scrollTop() < (caseTop - 60)){
+            index = 5;
+          }else if($(window).scrollTop() >= (caseTop - 60) && $(window).scrollTop() < (knowledgeTop - 60)){
+            index = 6;
+          }else if($(window).scrollTop() >= (knowledgeTop - 60)){
+            index = 7;
+          }
+          if(that.navigationIndex != index){
+            that.navigationIndex = index;
+            if(index > 2){
+              document.getElementById('navigation').scrollTo(80 * index,0);
+            }else {
+              document.getElementById('navigation').scrollTo(0,0);
+            }
+          }
+        });
+      },
+
+      showIcon(){
+        if(this.showNavigationIcon){
+          this.showNavigationIcon = false;
+          document.body.style.overflow = 'auto';
+        }else{
+          this.showNavigationIcon = true;
+          document.body.style.overflow = 'hidden';
+        }
+      },
+
+    },
   }
 </script>
 
@@ -800,13 +994,14 @@
   @import "../style/mixin";
   .container{
     background-color: #ECF1FB;
+    overflow-y: scroll;
   }
   .swiper-pagination{
     width: auto;
     left: calc(50% - 22px);
     background-color: #00000050;
     padding: 5px 10px 4px;
-    border-radius: 11px;
+    border-radius: 4vw;
     color: #fff;
   }
   .healthy-home{
@@ -861,7 +1056,6 @@
   .module-box{
     margin: 0px 8px 8px;
     background:rgba(255,255,255,1);
-    box-shadow:0px 0px 10px rgba(0,82,204,0.15);
     border-radius:12px;
   }
   .title-box{
@@ -1042,8 +1236,28 @@
     color:#101D37;
     width: calc(100% - 90px);
   }
+  .product-attribute-content{
+    height: 117px;
+    overflow: auto;
+  }
+  .product-model-text{
+    font-size:14px;
+    font-family:Microsoft YaHei;
+    font-weight:400;
+    line-height:24px;
+    border: 0px;
+  }
+  .product-model-title{
+    color:#9BA1AA;
+    width: 90px;
+    border-top: 0px !important;
+  }
+  .product-model-content{
+    color:#101D37;
+    border-top: 0px !important;
+  }
   .product-popup{
-    height: 325px;
+    height: 450px;
     border-radius: 10px 10px 0px 0px;
   }
   .model-product-info{
@@ -1064,8 +1278,7 @@
   }
   .popup-product-info-box{
     padding: 10px 15px 10px;
-    hidden:auto;
-    height: 281px;
+    overflow-y: scroll;
   }
   .relevant-video-box{
     display: flex;
@@ -1118,6 +1331,15 @@
     height: 80px;
     border-radius: 4px;
   }
+  .case-presentation div{
+    height: 27px;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    width: 100%;
+    background-color: #000;
+    opacity: 0.4;
+  }
   .case-presentation p{
     position: absolute;
     bottom: 4px;
@@ -1131,6 +1353,7 @@
     font-weight:400;
     line-height:20px;
     color:rgba(255,255,255,1);
+    z-index: 99;
   }
   .knowledge-box{
     padding: 0px 0px 10px;
@@ -1167,50 +1390,37 @@
   }
   .product-logo{
     position: absolute;
-    top: 0px;
+    top: 10px;
     z-index: 111;
-    width: 217px;
-    height: 57px;
-    left: 0px;
-  }
-  .healthy-header{
-    height:35px;
-    background:rgba(247,247,247,1);
-    display: flex;
-    align-items: center;
-    padding: 0px 15px;
-    justify-content: space-between;
-  }
-  .healthy-header p{
-    font-size:13px;
-    font-family:PingFang SC;
-    font-weight:400;
-    line-height:18px;
-    color:rgba(155,161,170,1);
+    width: 10%;
+    height: 10%;
+    left: 10px;
   }
   .healthy-content{
     display: flex;
-    align-items: center;
-    padding: 10px 15px;
     justify-content: space-between;
-    border-bottom:1px solid #EEEEEE;
+    padding: 0px 15px 0px;
   }
-  .healthy-content div{
-    width: 78px;
-    display: flex;
-    justify-content: center;
+  .healthy-content>img{
+    width: 120px;
+    height: 120px;
   }
   .healthy-content > div > p{
-    width: 45px;
-    height: 20px;
-    text-align: center;
-    padding: 2px 6px;
-    border-radius:2px;
-    font-size:12px;
-    font-family:PingFang SC;
-    font-weight:400;
-    color:rgba(255,255,255,1);
+    height: 21px;
+    font-size: 15px;
+    font-family: PingFang SC;
+    font-weight: bold;
     line-height: 16px;
+    color: rgba(0,82,204,1);
+  }
+  .healthy-report{
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+  }
+  .healthy-report > p{
+    margin-right: 4px;
+    color: #42526E;
   }
   .healthy-notes{
     padding: 20px 15px 15px;
@@ -1360,5 +1570,113 @@
   .product-info-checked {
     width: 15px;
     height: 17px;
+  }
+  .navigation-bar{
+    background-color: #fff;
+    position: fixed;
+    top: 0px;
+    width: 100%;
+    height: 44px;
+    display: flex;
+    z-index: 999;
+    border-bottom:1px solid #eee;
+  }
+  .navigation-bar >div:nth-child(1){
+    width: calc(100% - 44px);
+    display: flex;
+    overflow-x: scroll;
+    scroll-behavior:smooth;
+  }
+  .navigation-bar >div:nth-child(2){
+    width: 44px;
+    height: 100%;
+    padding: 13px 13px 15px 15px;
+    box-shadow:-2px 0px 2px rgba(0,0,0,0.1);
+  }
+  .navigation-bar p{
+    white-space: nowrap;
+    padding: 11px 15px;
+    font-size:15px;
+    font-family:PingFang SC;
+    font-weight:400;
+    line-height:21px;
+    color:rgba(51,51,51,1);
+  }
+  .navigation-bar-selected{
+    width:31px;
+    height:2px;
+    background:rgba(0,82,204,1);
+    margin: 0px auto;
+  }
+  .navigation-icon-box{
+    background-color: #fff;
+    position: fixed;
+    top: 44px;
+    width: 100%;
+    height: 210px;
+    padding: 22px 25px;
+    z-index: 99;
+  }
+  .navigation-icon{
+    width: 50px;
+    height: 50px;
+    border:1px solid #EEEEEEFF;
+    border-radius: 25px;
+    margin: 0px auto;
+  }
+  .navigation-box{
+    float: left;
+    width: 76px;
+    text-align: center;
+  }
+  .navigation-box p{
+    font-size:12px;
+    font-family:PingFang SC;
+    font-weight:400;
+    line-height:30px;
+    color:rgba(66,82,110,1);
+  }
+  .navigation-icon-box div:nth-child(2){
+    margin: 0px 20px;
+  }
+  .navigation-icon-box div:nth-child(3){
+    margin-right: 20px;
+  }
+  .navigation-icon-box div:nth-child(6){
+    margin: 16px 20px 0px;
+  }
+  .navigation-icon-box div:nth-child(7){
+    margin-right: 20px;
+    margin-top: 16px;
+  }
+  .navigation-icon-box div:nth-child(5){
+    margin-top: 16px;
+  }
+  .navigation-icon-box div:nth-child(8){
+    margin-top: 16px;
+  }
+  .mask{
+    height: 100vh;
+    width: 100%;
+    background-color: #000;
+    z-index: 80;
+    position: fixed;
+    top: 0px;
+    opacity: .7;
+    left: 0px;
+  }
+  .no-data{
+    text-align: center;
+    padding: 10px 0px 30px;
+  }
+  .no-data img{
+    margin: 0px auto;
+  }
+  .no-data p{
+    padding-top: 10px;
+    font-size: 14px;
+    font-family: Microsoft YaHei;
+    font-weight: 400;
+    color: #acb4c6;
   }
 </style>

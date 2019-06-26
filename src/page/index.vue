@@ -509,6 +509,7 @@ export default {
             let title = "修改地址";
             let newUrl = location.pathname + "?c=" + code;
             history.pushState(stateObj, title, newUrl);
+            removeStorage('subscribe');
           }
         },
         err => {}
@@ -641,7 +642,7 @@ export default {
   // 注销事件
   destroyed() {
     // 移除监听窗口关闭事件
-    removeStorage('subscribe');
+    // removeStorage('subscribe');
   //  window.removeEventListener('beforeunload', e => this.beforeunloadHandler(e))
   },
   methods: {

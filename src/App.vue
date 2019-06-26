@@ -20,10 +20,13 @@ export default {
   	}
   },
   created(){
-  
+    let that = this
+    window.addEventListener('popstate', function () {
+      that.$router.back(-2);
+    })
   },
   mounted(){
-  
+
   },
   destroyed() {
 
