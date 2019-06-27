@@ -19,6 +19,10 @@ export default {
   	}
   },
   created(){
+    let that = this
+    window.addEventListener('popstate', function () {
+      that.$router.back(-1);
+    })
   },
   mounted(){
 

@@ -867,7 +867,7 @@
        * 格式化时间戳
        */
       formatDateTime(date){
-        return new Date(date).Format("yyyy.MM.dd")
+        return date.substring(0,10).replace(new RegExp('-','g'),".");
       },
 
       /**
