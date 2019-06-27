@@ -18,7 +18,7 @@ export function getProductBySkuId(skuId) {
  */
 export function getwxcode(param) {
   return request({
-    url: '/vip/wxcode.htm?code=' + param,
+    url: '/vip/wxcode.htm?code=' + param + "&m=" + Math.random(),
     method: 'get',
   })
 }

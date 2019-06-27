@@ -598,28 +598,27 @@
         this.getProductInfo();
       }
       this.tokencode = getQueryStringByName("code");
-      console.log(this.tokencode)
+      console.log("this.tokencode",this.tokencode)
       if (this.tokencode) {
-        let param = {
-          code:this.tokencode
-        };
         getwxcode(this.tokencode).then(
           (res) => {
             console.log('resdata',res);
-            if (res && res.baseUserInfo && res.baseUserInfo.subscribe == 1) {
-              _this.subscribe = 1;
-              let stateObj = {};
-              let title = "修改地址";
-              let newUrl = location.pathname + "?c=" + code;
-              history.pushState(stateObj, title, newUrl);
-              _this.logined();
-            } else {
-              _this.subscribe = 0;
-              let stateObj = {};
-              let title = "修改地址";
-              let newUrl = location.pathname + "?c=" + code;
-              history.pushState(stateObj, title, newUrl);
-              removeStorage('subscribe');
+            if(res && res.baseUserInfo){
+              if (res.baseUserInfo.subscribe == 1) {
+                _this.subscribe = 1;
+                let stateObj = {};
+                let title = "修改地址";
+                let newUrl = location.pathname + "?c=" + code;
+                history.pushState(stateObj, title, newUrl);
+                _this.logined();
+              } else {
+                _this.subscribe = 0;
+                let stateObj = {};
+                let title = "修改地址";
+                let newUrl = location.pathname + "?c=" + code;
+                history.pushState(stateObj, title, newUrl);
+                removeStorage('subscribe');
+              }
             }
           },
           err => {}
@@ -669,8 +668,8 @@
         'CHANGE_SUBSCRIBE'
       ]),
       modelList(index){
-        let aa = ['healthy','harmful','authentication','like', 'product', 'video', 'case','knowledge']
-        return aa[index];
+        let list = ['healthy','harmful','authentication','like', 'product', 'video', 'case','knowledge']
+        return list[index];
       },
 
       logined(){
@@ -749,7 +748,7 @@
             }else{
               healthAssessment = {
                 modelList:health_assessment.proComponentExtJson,
-                url:health_assessment.proComponent[0].reports[0].url,
+                url:health_assessment.reports[0].url,
                 type:health_assessment.type
               }
             }
@@ -985,6 +984,9 @@
         }
       },
 
+    },
+    destroyed(){
+      document.querySelector('html').setAttribute('style', 'background-color:#f3f5f9;background:#f3f5f9;')
     },
   }
 </script>
@@ -1635,6 +1637,7 @@
     font-weight:400;
     line-height:30px;
     color:rgba(66,82,110,1);
+    white-space: nowrap;
   }
   .navigation-icon-box div:nth-child(2){
     margin: 0px 20px;
