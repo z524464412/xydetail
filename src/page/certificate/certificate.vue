@@ -144,7 +144,7 @@
               _this.showModel(true);
               return;
             } else {
-              _this.showPdf(res.pdfUrl);
+              _this.showPdf(report.url);
             }
           } else {
             this.titleInfo = "要查看检测报告<br/>请先关注公众号";
