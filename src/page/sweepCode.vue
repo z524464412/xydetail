@@ -2,7 +2,7 @@
   <div id="scrollBox" class="container">
     <!--轮播图-->
     <div class="swiper-container" style="height: 310px;">
-      <img class="vr" src="../../static/images/vr.png" alt="">
+      <img v-if="VRurl" class="vr" src="../../static/images/vr.png" alt="">
       <div class="swiper-wrapper">
         <div v-for="(bannerItem,bannerIndex) in bannerList" class="swiper-slide" style="position: relative;">
           <img style="height: 100%;" :src="bannerItem.url" alt="">
@@ -413,29 +413,29 @@
       <div v-for="(navigation,index) in navigationList"
            class="navigation-box"
            v-anchor="modelList(index)">
-        <div v-if="index === 0" class="navigation-icon" style="padding: 16px 14px 14px">
-          <img style="width: 22px;height: 19px;" :src="navigation.img" alt="">
+        <div v-if="index === 0" class="navigation-icon">
+          <img style="width: 20px;" :src="navigation.img" alt="">
         </div>
-        <div v-if="index === 1" class="navigation-icon" style="padding: 15px">
-          <img style="width: 20px;height: 20px;" :src="navigation.img" alt="">
+        <div v-if="index === 1" class="navigation-icon">
+          <img style="width: 20px;" :src="navigation.img" alt="">
         </div>
-        <div v-if="index === 2" class="navigation-icon" style="padding: 13px 16px 14px">
-          <img style="width: 18px;height: 23px;" :src="navigation.img" alt="">
+        <div v-if="index === 2" class="navigation-icon">
+          <img style="width: 20px;" :src="navigation.img" alt="">
         </div>
-        <div v-if="index === 3" class="navigation-icon" style="padding: 15px">
-          <img style="width: 20px;height: 20px;" :src="navigation.img" alt="">
+        <div v-if="index === 3" class="navigation-icon">
+          <img style="width: 20px;" :src="navigation.img" alt="">
         </div>
-        <div v-if="index === 4" class="navigation-icon" style="padding: 15px 14px 14px 15px">
-          <img style="width: 21px;height: 21px;" :src="navigation.img" alt="">
+        <div v-if="index === 4" class="navigation-icon">
+          <img style="width: 20px;" :src="navigation.img" alt="">
         </div>
-        <div v-if="index === 5" class="navigation-icon" style="padding: 16px 13px 15px 13px">
-          <img style="width: 24px;height: 19px;" :src="navigation.img" alt="">
+        <div v-if="index === 5" class="navigation-icon">
+          <img style="width: 20px;" :src="navigation.img" alt="">
         </div>
-        <div v-if="index === 6" class="navigation-icon" style="padding: 15px 16px 14px 16px">
-          <img style="width: 18px;height: 21px;" :src="navigation.img" alt="">
+        <div v-if="index === 6" class="navigation-icon">
+          <img style="width: 20px;" :src="navigation.img" alt="">
         </div>
         <div v-if="index === 7" class="navigation-icon" style="padding: 15px">
-          <img style="width: 19px;height: 20px;" :src="navigation.img" alt="">
+          <img style="width: 20px;" :src="navigation.img" alt="">
         </div>
         <p>{{navigation.name}}</p>
       </div>
@@ -537,40 +537,41 @@
         navigationList:[
           {
             name:'健康危害评价',
-            img:require("../../static/images/heart.png"),
+            img:require("../../static/images/heart@2x.png"),
           },
           {
             name:'有害物质检测',
-            img:require("../../static/images/harmful.png")
+            img:require("../../static/images/harmful@2x.png")
           },
           {
             name:'认证证书',
-            img:require("../../static/images/certificate.png")
+            img:require("../../static/images/certificate@2x.png")
           },
           {
             name:'为什么喜欢',
-            img:require("../../static/images/like.png")
+            img:require("../../static/images/like@2x.png")
           },
           {
             name:'产品信息',
-            img:require("../../static/images/info.png")
+            img:require("../../static/images/info@2x.png")
           },
           {
             name:'相关视频',
-            img:require("../../static/images/video.png")
+            img:require("../../static/images/video@2x.png")
           },
           {
             name:'案例',
-            img:require("../../static/images/cases.png")
+            img:require("../../static/images/cases@2x.png")
           },
           {
             name:'科普知识',
-            img:require("../../static/images/article.png")
+            img:require("../../static/images/article@2x.png")
           },
         ],
         navigationIndex:0,
         showNavigation:false,       // 显示导航栏
         showNavigationIcon:false,       // 显示导航栏图标
+        VRurl:'',
     }
     },
     created() {
@@ -1625,6 +1626,9 @@
     border:1px solid #EEEEEEFF;
     border-radius: 25px;
     margin: 0px auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   .navigation-box{
     float: left;
