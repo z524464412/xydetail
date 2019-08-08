@@ -330,7 +330,7 @@
                  v-if="healthAssessment.type === '2'">
               <p class="product-model-text product-model-content"
                  v-for="(model) in healthAssessment.modelList"
-                 v-if="model.harmLabel">
+                 >
                 {{model.makeUp}}
               </p>
             </div>
