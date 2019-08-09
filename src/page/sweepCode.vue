@@ -331,7 +331,7 @@
               <p class="product-model-text product-model-content"
                  v-for="(model) in healthAssessment.modelList"
                  >
-                {{model.makeUp}}
+                {{model.chemistryMatter}}
               </p>
             </div>
             <div class="product-attribute-content" style="width: calc(100% - 90px);"
