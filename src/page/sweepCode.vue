@@ -91,10 +91,10 @@
         <div class="from-content"
              v-for="(harmfulItem,harmfulIndex) in harmfulList"
              v-if="harmfulIndex < toShow && harmfulItem.testVal">
-          <p>{{harmfulItem.name}}</p>
+          <p>{{harmfulItem.rohsName}}</p>
           <p>{{harmfulItem.rohsValGB}}</p>
           <p>{{harmfulItem.testVal}}</p>
-          <p>{{harmfulItem.unit}}</p>
+          <p v-html="harmfulItem.unit"></p>
           <img style="width: 16px;height: 12px;margin-right: 3px;" src="../../static/images/checked.png" alt="">
         </div>
         <div class="test-report-box">
@@ -1395,8 +1395,8 @@
     position: absolute;
     top: 10px;
     z-index: 111;
-    width: 10%;
-    height: 10%;
+    width: 20%;
+    height: 20%;
     left: 10px;
   }
   .healthy-content{
