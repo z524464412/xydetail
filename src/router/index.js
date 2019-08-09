@@ -16,6 +16,8 @@ const dataInfo = () => import(/* webpackChunkName: "dataInfo" */ '@/page/dataInf
 const projectDetail = () => import(/* webpackChunkName: "projectDetail" */ '@/page/project/projectDetail');
 const productDetail = () => import(/* webpackChunkName: "productDetail" */ '@/page/product/productDetail');
 const pdf = () =>import(/* webpackChunkName: "PDF" */ '@/components/common/pdf/pdf')
+const vrIndex = () =>import(/* webpackChunkName: "vrIndex" */ '@/page/vrIndex')
+const vr = () =>import(/* webpackChunkName: "vr" */ '@/page/vr')
 
 
 Vue.use(Router)
@@ -117,8 +119,23 @@ export default new Router({
           meta: {
 		        keepAlive: false // 需要被缓存
 		      }
+        },
+        {
+          path: '/vrIndex',
+          name: 'vrIndex',
+          component: vrIndex,
+          meta: {
+            keepAlive: false // 需要被缓存
+          }
+        },
+        {
+          path: '/vr',
+          name: 'vr',
+          component: vr,
+          meta: {
+            keepAlive: false // 需要被缓存
+          }
         }
-
       ]
     },
   ],
