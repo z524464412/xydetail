@@ -83,18 +83,18 @@
       <div class="content">
         <div class="from-header">
           <p>有害物质</p>
+          <p>单位</p>
           <p>国家标准</p>
           <p>检测结果</p>
-          <p>单位</p>
           <p>合格</p>
         </div>
         <div class="from-content"
              v-for="(harmfulItem,harmfulIndex) in harmfulList"
              v-if="harmfulIndex < toShow && harmfulItem.testVal">
           <p>{{harmfulItem.rohsName}}</p>
+          <p v-html="harmfulItem.unit"></p>
           <p>{{harmfulItem.rohsValGB}}</p>
           <p>{{harmfulItem.testVal}}</p>
-          <p v-html="harmfulItem.unit"></p>
           <img style="width: 16px;height: 12px;margin-right: 3px;" src="../../static/images/checked.png" alt="">
         </div>
         <div class="test-report-box">
