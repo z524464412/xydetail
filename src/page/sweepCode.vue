@@ -1396,7 +1396,6 @@
     top: 10px;
     z-index: 111;
     width: 20%;
-    height: 20%;
     left: 10px;
   }
   .healthy-content{
