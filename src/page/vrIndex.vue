@@ -78,12 +78,15 @@
 </template>
 
 <script>
+
   export default {
     name: "",
+
     methods:{
       navTo(url){
         window.open(url);
-      }
+      },
+
     }
   }
 </script>

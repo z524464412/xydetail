@@ -15,6 +15,7 @@ module.exports = {
         // target: 'https://test.materialcircle.com',//接口域名
         // target: 'http://10.1.11.133:8080',//接口域名
         // target: 'http://10.1.11.145:8080',//接口域名
+        // target: 'http://localhost:8009',//接口域名
         changeOrigin: true,//是否跨域
         pathRewrite: {
           '^/api': '/api' //需要rewrite重写

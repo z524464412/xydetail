@@ -21,13 +21,18 @@
       <div class="material-box">
         <p class="material-title">所有材料</p>
         <div class="material-list">
-          <div class="material-item" v-for="n in 9">
+          <div class="material-item" v-for="item in productItemList">
             <div>
-              <img src="../../static/images/hexiangban-1@2x.png" alt="">
+              <img v-if="item.productPictureList && item.productPictureList.length > 0" :src="item.productPictureList[0].url" alt="">
+              <img v-else src="" alt="">
               <div>
-                <p>三棵树美净丽墙面漆</p>
-                <p>5L/内墙乳胶漆</p>
-                <p>CAUTION</p>
+                <!--<p>{{item.productPictureList}}</p>-->
+                <p>{{item.projectProductItem.productName}}</p>
+                <p>{{item.projectProductItem.productSkuSpec}}</p>
+                <p v-if="(item.productPictureList && item.productPictureList.length > 0) && (item.proHazardAssessmentList[0].harmfulLable === 'Red' || item.proHazardAssessmentList[0].harmfulLable === 'RedDG')" class="red" >AVOID</p>
+                <p v-else-if="(item.productPictureList && item.productPictureList.length > 0) && (item.proHazardAssessmentList[0].harmfulLable === 'Yellow' || item.proHazardAssessmentList[0].harmfulLable === 'YellowDG')" class="yellow" >CAUTION</p>
+                <p v-else-if="(item.productPictureList && item.productPictureList.length > 0) && item.proHazardAssessmentList[0].harmfulLable === 'Green'" class="yellow" >GOOD</p>
+                <p v-else></p>
               </div>
             </div>
             <i class="mint-toast-icon mintui mintui-back"></i>
@@ -39,12 +44,18 @@
 </template>
 
 <script>
+  import {
+    getProjectProductItemByPage} from "@/api/home";
   export default {
     name: "",
     data(){
       return{
         showDialog:false,
+        productItemList:[]
       }
+    },
+    created(){
+      this.getProjectProductItemByPage(116);
     },
     methods:{
       addClass(){
@@ -52,6 +63,12 @@
         setTimeout(()=>{
           this.showDialog = false
         },1000)
+      },
+      getProjectProductItemByPage(projectId){
+        let that = this;
+        getProjectProductItemByPage(projectId).then((data)=>{
+          that.productItemList = data.product;
+        }).catch(err=>console.log(err));
       }
     }
   }
@@ -195,6 +212,7 @@
           display: flex;
           img{
             width: 70px;
+            height: 70px;
           }
           >div{
             display: flex;
@@ -217,7 +235,6 @@
             p:nth-child(3){
               width: 70px;
               height:18px;
-              background:rgba(255,171,0,1);
               opacity:1;
               border-radius:2px;
               font-size:12px;
@@ -225,6 +242,7 @@
               line-height:20px;
               color:rgba(255,255,255,1);
               padding: 0px 5px;
+              text-align: center;
             }
           }
 
@@ -239,5 +257,14 @@
         margin-bottom: 0px;
       }
     }
+  }
+  .yellow{
+    background-color:#FFAB00;
+  }
+  .red{
+    background-color:#FF5630;
+  }
+  .green{
+    background-color:#00AF65;
   }
 </style>

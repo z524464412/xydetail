@@ -123,3 +123,14 @@ export function getSkuIdByCode(code) {
     method: 'get',
   })
 }
+
+/**
+ * 根据code查询skuId
+ * @param skuId
+ */
+export function getProjectProductItemByPage(projectId) {
+  return request({
+    url: '/api/v1/products/listProjectProductItemByPage?condition.projectId=' + projectId,
+    method: 'get',
+  })
+}

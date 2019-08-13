@@ -7,7 +7,7 @@ import * as auth from './auth'
 // create an axios instance
 const service = axios.create({
   //baseURL: httpUrl, // api 的 base_url
-  timeout: 5000 // request timeout
+  timeout: 30000 // request timeout
 })
 
 // request interceptor
