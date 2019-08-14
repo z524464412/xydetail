@@ -2,9 +2,9 @@
     <div class="all">
       <div>
         <img src="../../static/images/img-calculate@2x.png" alt="">
-        <div class="center-icon">
+        <div class="center-icon" @click="navRouter()">
           <img style="opacity: 0" src="../../static/images/img-calculate@2x.png" alt="">
-          <img @click="navRouter()" src="../../static/images/360-view@2x.png" alt="">
+          <img src="../../static/images/360-view@2x.png" alt="">
         </div>
       </div>
       <div class="product-box">
@@ -246,7 +246,7 @@
     }
   }
   .technology-box{
-    margin-top: 18px;
+    margin-top: 20px;
     display: flex;
     align-items: center;
     justify-content: space-between;

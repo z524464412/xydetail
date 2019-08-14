@@ -29,9 +29,9 @@
                 <!--<p>{{item.productPictureList}}</p>-->
                 <p>{{item.projectProductItem.productName}}</p>
                 <p>{{item.projectProductItem.productSkuSpec}}</p>
-                <p v-if="(item.productPictureList && item.productPictureList.length > 0 && item.productPictureList[0].harmfulLable) && (item.proHazardAssessmentList[0].harmfulLable == 'Red' || item.proHazardAssessmentList[0].harmfulLable == 'RedDG')" class="red" >AVOID</p>
-                <p v-else-if="(item.productPictureList && item.productPictureList.length > 0 && item.productPictureList[0].harmfulLable) && (item.proHazardAssessmentList[0].harmfulLable == 'Yellow' || item.proHazardAssessmentList[0].harmfulLable == 'YellowDG')" class="yellow" >CAUTION</p>
-                <p v-else-if="(item.productPictureList && item.productPictureList.length > 0 && item.productPictureList[0].harmfulLable) && item.proHazardAssessmentList[0].harmfulLable == 'Green'" class="green" >GOOD</p>
+                <p v-if="(item.proHazardAssessmentList && item.proHazardAssessmentList.length > 0) && (item.proHazardAssessmentList[0].harmfulLable == 'Red' || item.proHazardAssessmentList[0].harmfulLable == 'RedDG')" class="red" >AVOID</p>
+                <p v-else-if="(item.proHazardAssessmentList && item.proHazardAssessmentList.length > 0) && (item.proHazardAssessmentList[0].harmfulLable == 'Yellow' || item.proHazardAssessmentList[0].harmfulLable == 'YellowDG')" class="yellow" >CAUTION</p>
+                <p v-else-if="(item.proHazardAssessmentList && item.proHazardAssessmentList.length > 0) && item.proHazardAssessmentList[0].harmfulLable == 'Green'" class="green" >GOOD</p>
                 <p v-else></p>
               </div>
             </div>
