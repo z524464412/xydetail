@@ -55,7 +55,7 @@
       }
     },
     created(){
-      this.getProjectProductItemByPage(116);
+      this.getProjectProductItemByPage(317);
     },
     methods:{
       addClass(){
@@ -75,7 +75,7 @@
         switch (window.host){
           case 'testweb.materialcircle.com':window.location.href = "https://test.materialcircle.com/appview/index.html?skuId=" + skuId + "#/sweepCode";break;
           case 'xy.materialcircle.com':window.location.href = "https://xy.materialcircle.com/appview/index.html?skuId=" + skuId + "#/sweepCode";break;
-          default: window.location.href = "https://test.materialcircle.com/appview/index.html?skuId=" + skuId + "#/sweepCode";break;
+          default: window.location.href = location.origin + location.pathname + "?skuId=" + skuId + "#/sweepCode";break;
         }
 
       },
