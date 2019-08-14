@@ -165,10 +165,9 @@
     height: 100vh;
     width: 100%;
     left: 0px;
-    top: 0px;
+    top: 16%;
     display: flex;
     justify-content: center;
-    align-items: center;
     .click-box{
       height: 100%;
       width: 100%;
