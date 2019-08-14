@@ -40,6 +40,8 @@
         </div>
       </div>
     </div>
+    <img v-if="openIframe" @click="openIframe = ''" style="position: absolute;width: 30px;height: 30px;top: 3.5%;right: 2.5%;z-index: 99;" src="../../static/images/close@2x.png" alt="">
+    <iframe v-if="openIframe" class="open-iframe" id="iframeDialog" :src="openIframe"></iframe>
   </div>
 </template>
 
@@ -51,7 +53,8 @@
     data(){
       return{
         showDialog:false,
-        productItemList:[]
+        productItemList:[],
+        openIframe:'',
       }
     },
     created(){
@@ -72,12 +75,13 @@
       },
 
       navTo(skuId){
+        let url;
         switch (window.host){
-          case 'testweb.materialcircle.com':window.location.href = "https://test.materialcircle.com/appview/index.html?skuId=" + skuId + "#/sweepCode";break;
-          case 'xy.materialcircle.com':window.location.href = "https://xy.materialcircle.com/appview/index.html?skuId=" + skuId + "#/sweepCode";break;
-          default: window.location.href = location.origin + location.pathname + "?skuId=" + skuId + "#/sweepCode";break;
+          case 'testweb.materialcircle.com':url = "https://www.materialcircle.com/#/productList/productDetail?skuId=" + skuId;break;
+          case 'xy.materialcircle.com':url = "https://www.materialcircle.com/#/productList/productDetail?skuId=" + skuId;break;
+          default: url = "https://www.materialcircle.com/#/productList/productDetail?skuId=" + skuId;break;
         }
-
+        this.openIframe = url;
       },
 
 
@@ -90,6 +94,13 @@
   .iframe-box{
     width: 100%;
     height: 100vh;
+  }
+  .open-iframe{
+    position: absolute;
+    width: 95%;
+    height: 95vh;
+    top: 2.5%;
+    left: 2.5%;
   }
   .material-science{
       width:180px;
