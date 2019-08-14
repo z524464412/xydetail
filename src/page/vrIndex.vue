@@ -4,7 +4,7 @@
         <img src="../../static/images/img-calculate@2x.png" alt="">
         <div class="center-icon">
           <img style="opacity: 0" src="../../static/images/img-calculate@2x.png" alt="">
-          <img src="../../static/images/360-view@2x.png" alt="">
+          <img @click="navRouter()" src="../../static/images/360-view@2x.png" alt="">
         </div>
       </div>
       <div class="product-box">
@@ -18,8 +18,8 @@
             <p>Landsea Green Center Shanghai</p>
           </div>
           <div>
-            <img src="../../static/images/share@2x.png" alt="">
-            <p>分享</p>
+            <!--<img src="../../static/images/share@2x.png" alt="">-->
+            <!--<p>分享</p>-->
           </div>
         </div>
         <div class="harmful-box">
@@ -35,7 +35,7 @@
             <p>国标≤0.6mg/m³</p>
           </div>
         </div>
-        <div class="technology-box">
+        <div class="technology-box" @click="showPdf()">
           <div>
             <img src="../../static/images/technology@2x.png" alt="">
             <p><span>14</span>大技术体系共<span>108</span>项建筑科技</p>
@@ -68,7 +68,7 @@
           </div>
         </div>
       </div>
-      <div class="healthy-home">
+      <div class="healthy-home" @click="navToArticle('productArticle','about','31','1')">
         <img src="../../static/images/xunyuan-icon.png" alt="">
         <div class="healthy-home-line"></div>
         <p>健康家居 ‧ 有源可循</p>
@@ -86,6 +86,32 @@
       navTo(url){
         window.open(url);
       },
+      navRouter(){
+        this.$router.push({name:'vr'})
+      },
+
+      /**
+       * 跳转页面
+       */
+      navToArticle(name,type,index,showType,url){
+        let { skuId } = this;
+        switch (type){
+          case 'name': this.$router.push({name:name,query:{skuId:skuId}});break;
+          case 'video': this.$router.push({name:name,query:{skuId:skuId,videoIndex:index}});break;
+          case 'about':
+            if(showType === '0'){
+              window.location.href = url;
+            }else{
+              this.$router.push({name:name,query:{id:index,showType:showType}});
+            }
+            break;
+        }
+      },
+
+      showPdf() {
+        window.open('https://xy.materialcircle.com/viewFileOss.htm?ossFileKey=2cc2dfa0f4324f498867664cb6aa1e68.pdf&ossFileAuthType=prv');
+      },
+
 
     }
   }

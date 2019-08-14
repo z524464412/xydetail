@@ -580,6 +580,7 @@
     mounted(){
       let _this = this;
       let code = getQueryStringByName("c");
+      let shuId = getQueryStringByName("skuId");
       let id = getQueryStringByName("id");
       if (code) {
         getSkuIdByCode(code)
@@ -591,6 +592,12 @@
             this.getProductInfo();
           })
           .catch(err=>console.log(err))
+      }else if(shuId){
+        _this.skuId = shuId;
+        //获取code详情
+        this.getCodeDetail();
+        //获取产品详情
+        this.getProductInfo();
       }else{
         this.skuId = id;
         //获取code详情

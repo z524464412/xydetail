@@ -21,7 +21,7 @@
       <div class="material-box">
         <p class="material-title">所有材料</p>
         <div class="material-list">
-          <div class="material-item" v-for="item in productItemList">
+          <div class="material-item" @click="navTo(item.projectProductItem.productSkuId)" v-for="item in productItemList">
             <div>
               <img v-if="item.productPictureList && item.productPictureList.length > 0" :src="item.productPictureList[0].url" alt="">
               <img v-else src="" alt="">
@@ -29,9 +29,9 @@
                 <!--<p>{{item.productPictureList}}</p>-->
                 <p>{{item.projectProductItem.productName}}</p>
                 <p>{{item.projectProductItem.productSkuSpec}}</p>
-                <p v-if="(item.productPictureList && item.productPictureList.length > 0) && (item.proHazardAssessmentList[0].harmfulLable === 'Red' || item.proHazardAssessmentList[0].harmfulLable === 'RedDG')" class="red" >AVOID</p>
-                <p v-else-if="(item.productPictureList && item.productPictureList.length > 0) && (item.proHazardAssessmentList[0].harmfulLable === 'Yellow' || item.proHazardAssessmentList[0].harmfulLable === 'YellowDG')" class="yellow" >CAUTION</p>
-                <p v-else-if="(item.productPictureList && item.productPictureList.length > 0) && item.proHazardAssessmentList[0].harmfulLable === 'Green'" class="yellow" >GOOD</p>
+                <p v-if="(item.productPictureList && item.productPictureList.length > 0 && item.productPictureList[0].harmfulLable) && (item.proHazardAssessmentList[0].harmfulLable == 'Red' || item.proHazardAssessmentList[0].harmfulLable == 'RedDG')" class="red" >AVOID</p>
+                <p v-else-if="(item.productPictureList && item.productPictureList.length > 0 && item.productPictureList[0].harmfulLable) && (item.proHazardAssessmentList[0].harmfulLable == 'Yellow' || item.proHazardAssessmentList[0].harmfulLable == 'YellowDG')" class="yellow" >CAUTION</p>
+                <p v-else-if="(item.productPictureList && item.productPictureList.length > 0 && item.productPictureList[0].harmfulLable) && item.proHazardAssessmentList[0].harmfulLable == 'Green'" class="green" >GOOD</p>
                 <p v-else></p>
               </div>
             </div>
@@ -69,7 +69,18 @@
         getProjectProductItemByPage(projectId).then((data)=>{
           that.productItemList = data.product;
         }).catch(err=>console.log(err));
-      }
+      },
+
+      navTo(skuId){
+        switch (window.host){
+          case 'testweb.materialcircle.com':window.location.href = "https://test.materialcircle.com/appview/index.html?skuId=" + skuId + "#/sweepCode";break;
+          case 'xy.materialcircle.com':window.location.href = "https://xy.materialcircle.com/appview/index.html?skuId=" + skuId + "#/sweepCode";break;
+          default: window.location.href = "https://test.materialcircle.com/appview/index.html?skuId=" + skuId + "#/sweepCode";break;
+        }
+
+      },
+
+
     }
   }
 </script>
@@ -133,7 +144,7 @@
     border-radius:50%;
     position: absolute;
     bottom: 80px;
-    right: 0px;
+    right: 25px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -164,12 +175,15 @@
       z-index: 1;
     }
     .material-box{
-      width:324px;
+      width:360px;
       height:440px;
       background:rgba(0,0,0,0.8);
       border-radius:4px;
       z-index: 889;
       position: absolute;
+      p{
+        font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Segoe UI", "Helvetica Neue", "PingFang SC", "Noto Sans", "Noto Sans CJK SC", "Microsoft YaHei", 微软雅黑, sans-serif;
+      }
       .material-title{
         font-size:18px;
         font-family:PingFang SC;
@@ -207,7 +221,7 @@
         justify-content: space-between;
         align-items: center;
         padding:0px 15px;
-        margin-bottom:10px;
+        margin-bottom:20px;
         >div{
           display: flex;
           img{
