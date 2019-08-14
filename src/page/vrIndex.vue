@@ -224,7 +224,6 @@
       }
       >p:nth-child(2){
         font-size:20px;
-        font-family:DIN;
         font-weight:bold;
         line-height:22px;
         color:rgba(0,82,204,1);
