@@ -77,9 +77,9 @@
       navTo(skuId){
         let url;
         switch (window.host){
-          case 'testweb.materialcircle.com':url = "https://www.materialcircle.com/#/productList/productDetail?skuId=" + skuId;break;
-          case 'xy.materialcircle.com':url = "https://www.materialcircle.com/#/productList/productDetail?skuId=" + skuId;break;
-          default: url = "https://www.materialcircle.com/#/productList/productDetail?skuId=" + skuId;break;
+          case 'testweb.materialcircle.com':url =  "https://xy.materialcircle.com/appview/index.html?skuId=" + skuId + "#/sweepCode";break;
+          case 'xy.materialcircle.com':url = "https://xy.materialcircle.com/appview/index.html?skuId=" + skuId + "#/sweepCode";break;
+          default: url =  "https://xy.materialcircle.com/appview/index.html?skuId=" + skuId + "#/sweepCode";break;
         }
         this.openIframe = url;
       },
