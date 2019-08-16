@@ -322,7 +322,7 @@
           </div>
           <div class="product-attribute">
             <p>产品描述:</p>
-            <p class="product-attribute-content">{{productInfo.desc}}</p>
+            <p class="product-attribute-content" v-html="productInfo.desc"></p>
           </div>
           <div style="display: flex;">
             <p class="product-model-text product-model-title">原材料组成：</p>
@@ -339,8 +339,8 @@
               <p class="product-model-text product-model-content"
                  style="color: #0052CCFF"
                  v-for="(model) in healthAssessment.modelList"
-                 @click="toProduct(model.childProductSkuID)">
-                {{model.childProductSkuName}}
+                 @click="toProduct(model.id)">
+                {{model.chemistryMatter}}
               </p>
             </div>
           </div>
@@ -782,8 +782,8 @@
               }
             }else{
               healthAssessment = {
-                modelList:health_assessment.proComponentExtJson,
-                url:health_assessment.reports[0].url,
+                modelList:health_assessment.health_assessment.chemistryMatterArray[0].childArray,
+                url:health_assessment.reports.length > 0 &&  health_assessment.reports[0].url,
                 type:health_assessment.type
               }
             }
