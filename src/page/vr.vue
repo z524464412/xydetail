@@ -1,7 +1,7 @@
 <template>
   <div style="position: relative">
     <iframe class="iframe-box" id="mainContent" src="https://ilandhouse.oss-cn-shanghai.aliyuncs.com/VRProject/朗诗绿色中心/VR%E6%9C%97%E8%AF%97%E7%BB%BF%E8%89%B2%E4%B8%AD%E5%BF%83/index.html"></iframe>
-    <div class="material-science">
+    <div class="material-science" @click="showPdf()">
       <div></div>
       <div>
         <div>
@@ -84,6 +84,9 @@
         // this.openIframe = url;
       },
 
+      showPdf() {
+        window.open('https://ilandhouse.oss-cn-shanghai.aliyuncs.com/97195cf161834e129b4e274f06e7c00d.pdf');
+      },
 
     }
   }
