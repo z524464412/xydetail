@@ -621,14 +621,24 @@
                 _this.subscribe = 1;
                 let stateObj = {};
                 let title = "修改地址";
-                let newUrl = location.pathname + "?c=" + code;
+                let newUrl;
+                if(code){
+                  newUrl = location.pathname + "?c=" + code;
+                }else{
+                  newUrl = location.pathname + "?skuId=" + shuId;
+                }
                 history.pushState(stateObj, title, newUrl);
                 _this.logined();
               } else {
                 _this.subscribe = 0;
                 let stateObj = {};
                 let title = "修改地址";
-                let newUrl = location.pathname + "?c=" + code;
+                let newUrl;
+                if(code){
+                  newUrl = location.pathname + "?c=" + code;
+                }else{
+                  newUrl = location.pathname + "?skuId=" + shuId;
+                }
                 history.pushState(stateObj, title, newUrl);
                 removeStorage('subscribe');
               }
