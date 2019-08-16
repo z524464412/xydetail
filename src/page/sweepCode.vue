@@ -1504,12 +1504,12 @@
     color:rgba(168,173,185,1);
   }
   .why-to-like-box{
-    height: 315px;
+    height: 185px;
     overflow: hidden;
     padding: 0px 15px 15px;
   }
   .why-to-like{
-    height: 300px;
+    height: 170px;
     overflow: hidden;
   }
 
