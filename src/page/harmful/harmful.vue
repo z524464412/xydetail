@@ -85,6 +85,9 @@
                   <div>
                     <img style="width:85px;height:30px;margin:0 auto;" src="@/assets/image/icon_company5.png" alt="">
                   </div>
+                  <div>
+                    <img style="width:85px;height:30px;margin:0 auto;" src="@/assets/image/icon_company6.png" alt="">
+                  </div>
                 </div>
               </div>
             </div>

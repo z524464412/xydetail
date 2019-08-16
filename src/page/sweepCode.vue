@@ -29,7 +29,7 @@
     </div>
     <!--认证图标-->
     <!--健康危害评价-->
-    <div id="healthy" class="module-box" style="margin-top: 8px;">
+    <div  v-if="isExposure == 2 || isExposure == 3" id="healthy" class="module-box" style="margin-top: 8px;">
       <div class="title-box">
         <div class="title-left">
           <img style="width: 18px;height: 16px;" src="../../static/images/heart.png" alt="">
@@ -521,7 +521,11 @@
         certificatesList:[],    // 证书
         casesList:[],           // 案例list
         videoList:[],           // 视频list
-        productInfo:{},         // 产品信息
+        productInfo:{
+          health_assessment:{
+
+          }
+        },         // 产品信息
         articlesList:[],        // 文章list
         like:"",                // 为什么喜欢
         platform: init_platform(), //浏览器平台
@@ -532,6 +536,7 @@
         modelStatus:'default',//默认显示弹框
         htmlTitle: "", //html头部显示文本
         healthAssessment:{},        // 健康危害
+        isExposure:'',              // 不披露
         supplier:{},                //
         browserCount:0,                 // 浏览次数
         navigationList:[
@@ -575,7 +580,7 @@
     }
     },
     created() {
-      document.querySelector('html').setAttribute('style', 'background-color:#f3f5f9;background:#f3f5f9;padding-bottom:20px;scroll-behavior: smooth;')
+      document.querySelector('html').setAttribute('style', 'background-color:#f3f5f9;background:#f3f5f9;scroll-behavior: smooth;')
     },
     mounted(){
       let _this = this;
@@ -657,6 +662,10 @@
           }
         });
       }
+      if(getStorage('scrollTop')){
+        document.documentElement.scrollTop = getStorage('scrollTop')
+        setStorage('scrollTop','')
+      }
     },
     components:{
 
@@ -676,7 +685,11 @@
         'CHANGE_SUBSCRIBE'
       ]),
       modelList(index){
-        let list = ['healthy','harmful','authentication','like', 'product', 'video', 'case','knowledge']
+        let that = this;
+        let list = ['healthy','harmful','authentication','like', 'product', 'video', 'case','knowledge'];
+        if(that.isExposure !== 2 || that.isExposure !== 3){
+          list.shift();
+        }
         return list[index];
       },
 
@@ -746,6 +759,10 @@
             that.videoList = videos;      // 视频list
             that.articlesList = articles; // 文章list
             that.supplier = supplier;
+            that.isExposure = health_assessment.isExposure
+            if(health_assessment.isExposure !== 2 || health_assessment.isExposure !== 3){
+              that.navigationList.shift();
+            }
             //type:1-定制家具，2-标准品
             if(health_assessment.type === '2'){
               healthAssessment = {
@@ -789,6 +806,7 @@
        * 跳转页面
        */
       navTo(name,type,index,showType,url){
+        this.recordScroll();
         let { skuId } = this;
         switch (type){
           case 'name': this.$router.push({name:name,query:{skuId:skuId}});break;
@@ -805,6 +823,7 @@
 
 
       casesTo(item){
+        this.recordScroll();
         if(item.showType === '0'){
           window.location.href = item.url
         }else{
@@ -895,6 +914,7 @@
       },
 
       showPdf(url) {
+        this.recordScroll();
         console.log("url",url);
         let newUrl = url.split("com")[1];
         this.$router.push({ name: "pdf", query: { url: Base64.encode(newUrl) } });
@@ -922,6 +942,7 @@
 
 
       toProduct(id){
+        this.recordScroll();
         let { search ,origin,hash,pathname} = window.location;
         let searchList = search.split("&");
         searchList[0] = '?id=' + id;
@@ -936,41 +957,71 @@
         let that = this;
         let { navigationList } = this;
         $(window).scroll(function() {
-          let isShowNav,index;
-          let healthyTop = document.getElementById('healthy').offsetTop,
-            harmfulTop = document.getElementById('harmful').offsetTop,
+          let isShowNav,index,healthyTop;
+          if(that.isExposure == 2 || that.isExposure == 3){
+            healthyTop = document.getElementById('healthy').offsetTop;
+          }
+          let harmfulTop = document.getElementById('harmful').offsetTop,
             authenticationTop = document.getElementById('authentication').offsetTop,
             likeTop = document.getElementById('like').offsetTop,
             productTop = document.getElementById('product').offsetTop,
             videoTop = document.getElementById('video').offsetTop,
             caseTop = document.getElementById('case').offsetTop,
             knowledgeTop = document.getElementById('knowledge').offsetTop;
-          if ($(window).scrollTop() > (healthyTop - 60)) {
-            isShowNav = true;
-          } else {
-            // isShowNav = false;
+          if(that.isExposure == 2 || that.isExposure == 3){
+            if ($(window).scrollTop() > (healthyTop - 60)) {
+              isShowNav = true;
+            } else {
+              isShowNav = false;
+            }
+          }else{
+            if ($(window).scrollTop() > (harmfulTop - 60)) {
+              isShowNav = true;
+            } else {
+              isShowNav = false;
+            }
           }
+
           if(that.showNavigation != isShowNav){
             that.showNavigation = isShowNav
             console.log("isShowNav",that.showNavigation);
           }
-          if($(window).scrollTop() < (harmfulTop - 60)){
-            index = 0;
-          }else if($(window).scrollTop() >= (harmfulTop - 60) && $(window).scrollTop() < (authenticationTop - 60)){
-            index = 1;
-          }else if($(window).scrollTop() >= (authenticationTop - 60) && $(window).scrollTop() < (likeTop - 60)){
-            index = 2;
-          }else if($(window).scrollTop() >= (likeTop - 60) && $(window).scrollTop() < (productTop - 60)){
-            index = 3;
-          }else if($(window).scrollTop() >= (productTop - 60) && $(window).scrollTop() < (videoTop - 60)){
-            index = 4;
-          }else if($(window).scrollTop() >= (videoTop - 60) && $(window).scrollTop() < (caseTop - 60)){
-            index = 5;
-          }else if($(window).scrollTop() >= (caseTop - 60) && $(window).scrollTop() < (knowledgeTop - 60)){
-            index = 6;
-          }else if($(window).scrollTop() >= (knowledgeTop - 60)){
-            index = 7;
+          if(that.isExposure == 2 || that.isExposure == 3){
+            if($(window).scrollTop() < (harmfulTop - 60)){
+              index = 0;
+            }else if($(window).scrollTop() >= (harmfulTop - 60) && $(window).scrollTop() < (authenticationTop - 60)){
+              index = 1;
+            }else if($(window).scrollTop() >= (authenticationTop - 60) && $(window).scrollTop() < (likeTop - 60)){
+              index = 2;
+            }else if($(window).scrollTop() >= (likeTop - 60) && $(window).scrollTop() < (productTop - 60)){
+              index = 3;
+            }else if($(window).scrollTop() >= (productTop - 60) && $(window).scrollTop() < (videoTop - 60)){
+              index = 4;
+            }else if($(window).scrollTop() >= (videoTop - 60) && $(window).scrollTop() < (caseTop - 60)){
+              index = 5;
+            }else if($(window).scrollTop() >= (caseTop - 60) && $(window).scrollTop() < (knowledgeTop - 60)){
+              index = 6;
+            }else if($(window).scrollTop() >= (knowledgeTop - 60)){
+              index = 7;
+            }
+          }else{
+            if($(window).scrollTop() < (authenticationTop - 60)){
+              index = 0;
+            }else if($(window).scrollTop() >= (authenticationTop - 60) && $(window).scrollTop() < (likeTop - 60)){
+              index = 1;
+            }else if($(window).scrollTop() >= (likeTop - 60) && $(window).scrollTop() < (productTop - 60)){
+              index = 2;
+            }else if($(window).scrollTop() >= (productTop - 60) && $(window).scrollTop() < (videoTop - 60)){
+              index = 3;
+            }else if($(window).scrollTop() >= (videoTop - 60) && $(window).scrollTop() < (caseTop - 60)){
+              index = 4;
+            }else if($(window).scrollTop() >= (caseTop - 60) && $(window).scrollTop() < (knowledgeTop - 60)){
+              index = 5;
+            }else if($(window).scrollTop() >= (knowledgeTop - 60)){
+              index = 6;
+            }
           }
+
           if(that.navigationIndex != index){
             that.navigationIndex = index;
             if(index > 2){
@@ -991,8 +1042,11 @@
           document.body.style.overflow = 'hidden';
         }
       },
-
+      recordScroll(){
+        setStorage('scrollTop',$(window).scrollTop());
+      },
     },
+
     destroyed(){
       document.querySelector('html').setAttribute('style', 'background-color:#f3f5f9;background:#f3f5f9;')
     },
@@ -1064,7 +1118,7 @@
     color:rgba(66,82,110,1);
   }
   .module-box{
-    margin: 0px 8px 8px;
+    margin: 8px;
     background:rgba(255,255,255,1);
     border-radius:12px;
   }

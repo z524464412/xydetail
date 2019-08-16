@@ -77,9 +77,9 @@
       navTo(skuId){
         let url;
         switch (window.host){
-          case 'testweb.materialcircle.com':url =  "https://xy.materialcircle.com/appview/index.html?skuId=" + skuId + "#/sweepCode";break;
+          case 'testweb.materialcircle.com':url = "https://test.materialcircle.com/appview/index.html?skuId=" + skuId + "#/sweepCode";break;
           case 'xy.materialcircle.com':url = "https://xy.materialcircle.com/appview/index.html?skuId=" + skuId + "#/sweepCode";break;
-          default: url =  "https://xy.materialcircle.com/appview/index.html?skuId=" + skuId + "#/sweepCode";break;
+          default: url = location.origin + location.pathname + "?skuId=" + skuId + "#/sweepCode";break;
         }
         this.openIframe = url;
       },
@@ -187,7 +187,7 @@
     }
     .material-box{
       width:360px;
-      height:440px;
+      height:60%;
       background:rgba(0,0,0,0.8);
       border-radius:4px;
       z-index: 889;
