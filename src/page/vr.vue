@@ -29,9 +29,9 @@
                 <!--<p>{{item.productPictureList}}</p>-->
                 <p>{{item.projectProductItem.productName}}</p>
                 <p>{{item.projectProductItem.productSkuSpec}}</p>
-                <p v-if="(item.proHazardAssessmentList && item.proHazardAssessmentList.length > 0) && (item.proHazardAssessmentList[0].harmfulLable == 'Red' || item.proHazardAssessmentList[0].harmfulLable == 'RedDG')" class="red" >AVOID</p>
-                <p v-else-if="(item.proHazardAssessmentList && item.proHazardAssessmentList.length > 0) && (item.proHazardAssessmentList[0].harmfulLable == 'Yellow' || item.proHazardAssessmentList[0].harmfulLable == 'YellowDG')" class="yellow" >CAUTION</p>
-                <p v-else-if="(item.proHazardAssessmentList && item.proHazardAssessmentList.length > 0) && item.proHazardAssessmentList[0].harmfulLable == 'Green'" class="green" >GOOD</p>
+                <p v-if="(item.proHazardAssessmentList && item.proHazardAssessmentList.length > 0) && (item.proHazardAssessmentList[0].harmfulLable == 'Red' || item.proHazardAssessmentList[0].harmfulLable == 'RedDG')" class="red" >健康危害评价</p>
+                <p v-else-if="(item.proHazardAssessmentList && item.proHazardAssessmentList.length > 0) && (item.proHazardAssessmentList[0].harmfulLable == 'Yellow' || item.proHazardAssessmentList[0].harmfulLable == 'YellowDG')" class="yellow" >健康危害评价</p>
+                <p v-else-if="(item.proHazardAssessmentList && item.proHazardAssessmentList.length > 0) && item.proHazardAssessmentList[0].harmfulLable == 'Green'" class="green" >健康危害评价</p>
                 <p v-else></p>
               </div>
             </div>
@@ -261,7 +261,7 @@
               opacity:0.7;
             }
             p:nth-child(3){
-              width: 70px;
+              width: 100px;
               height:18px;
               opacity:1;
               border-radius:2px;
