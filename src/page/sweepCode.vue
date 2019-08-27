@@ -588,19 +588,6 @@
           <div class="flex-table-container fixed-height">
             <div style="justify-content: center;display: flex;">
               <span>危害等级</span>
-              <!-- <el-popover
-                placement="top"
-                width="300"
-                trigger="hover"
-                content="危害等级通常用vH、H、M、L、DG、N/A表示，其中vH代表危害等级极高，H代表危害等级高，M代表危害等级中等，L代表危害等级低，DG代表危害等级无法确定，N/A代表暂无该健康危害数据。"
-              >
-                <img
-                  slot="reference"
-                  style="width: 14px;margin-left: 6px;"
-                  src="@/assets/image/tip.png"
-                  alt
-                />
-              </el-popover>-->
             </div>
             <div>
               <span v-text="proHazardAssessment.carcinogenicity"></span>
@@ -636,20 +623,6 @@
           <div class="flex-table-container">
             <div class="resultflex">
               <span>评价结果</span>
-              <!-- <el-popover placement="top" width="300" trigger="hover">
-                <p>
-                  评价结果使用红、黄、绿三种颜色标识，来解读其健康危害程度，其中：
-                  <br />● 红色代表健康危害相对较高，在选材时应尽量避免该类材料，除非健康危害物质的含量在安全范围内；
-                  <br />● 黄色代表健康危害相对适中，可选择并使用，但为了更安全的居住环境，应寻找更环保的替代材料；
-                  <br />● 绿色代表健康危害相对较低，是比较安全的材料，可放心选用。
-                </p>
-                <img
-                  slot="reference"
-                  style="width: 14px;margin-left: 6px;"
-                  src="@/assets/image/tip.png"
-                  alt
-                />
-              </el-popover>-->
             </div>
             <div class="resultClass">
               <div v-if="proHazardAssessment.harmfulLable == 'Green'" class="greenStyle"></div>
@@ -829,20 +802,6 @@
               <div class="flex-table-container">
                 <div class="resultflex">
                   <span>评价结果</span>
-                  <!-- <el-popover placement="top" width="300" trigger="hover">
-                <p>
-                  评价结果使用红、黄、绿三种颜色标识，来解读其健康危害程度，其中：
-                  <br />● 红色代表健康危害相对较高，在选材时应尽量避免该类材料，除非健康危害物质的含量在安全范围内；
-                  <br />● 黄色代表健康危害相对适中，可选择并使用，但为了更安全的居住环境，应寻找更环保的替代材料；
-                  <br />● 绿色代表健康危害相对较低，是比较安全的材料，可放心选用。
-                </p>
-                <img
-                  slot="reference"
-                  style="width: 14px;margin-left: 6px;"
-                  src="@/assets/image/tip.png"
-                  alt
-                />
-                  </el-popover>-->
                 </div>
                 <div class="resultClass">
                   <div v-if="proHazardAssessmentObj.harmfulLable == 'Green'" class="greenStyle"></div>
@@ -1814,6 +1773,8 @@ export default {
 @import "../style/common";
 @import "../style/mixin";
 #scrollBox{
+  width: 100vw;
+  overflow: hidden;
   padding-bottom: 40px;
 }
 /deep/ .el-row--flex {
@@ -1824,6 +1785,10 @@ export default {
 }
 /deep/ .mint-popup p {
   border-top: 0;
+}
+/deep/ .el-table{
+  width: 100vw !important;
+  overflow: auto !important;
 }
 /deep/ .el-table__body, .el-table__footer, .el-table__header{
   color: #101d37;
@@ -2101,6 +2066,8 @@ thead tr {
 }
 .product-popup {
   min-height: 250px;
+  width: 100vw !important;
+  overflow: auto;
   // border-radius: 10px 10px 0px 0px;
 }
 .model-product-info {
@@ -2757,7 +2724,9 @@ thead tr {
   }
   & > div:nth-child(2) {
     text-align: center;
-    flex: 0 0 16px;
+    flex: 0 0 auto;
+    // word-break: break-all;
+    // text-overflow: hidden;
   }
 }
 .health-table-container {
@@ -2786,6 +2755,7 @@ thead tr {
   }
   & > div.resultClass {
     flex: 0 0 800px;
+    // flex: 0 0 10px;
     height: 35px;
   }
   & > div.resultflex {
