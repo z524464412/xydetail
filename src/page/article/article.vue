@@ -127,7 +127,6 @@
   .logo-vertical p{
     height: 29px;
     font-size: 20px;
-    font-family: PingFang SC;
     font-weight: 500;
     line-height: 30px;
     color: rgba(255,255,255,1);

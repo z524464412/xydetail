@@ -78,183 +78,6 @@
       </div>
     </div>
 
-    <!-- 产品组成 -->
-    <div
-      id="product"
-      class="module-box"
-      v-if="isExposure == 2 || isExposure == 1 || isExposure == 3"
-    >
-      <div class="title-box">
-        <div class="title-left">
-          <img style="width: 18px;height: 18px;" src="@/assets/image/icon_product.png" alt />
-          <p>产品组成</p>
-        </div>
-      </div>
-      <div class="product-box">
-        <div class="product-box-container">
-          <!-- 产品注册 -->
-          <div
-            class="product-harmful-container navBarBox"
-            data-index="1"
-            v-if="healthAssessmentObj
-                  && healthAssessmentObj.health_assessment
-                  && healthAssessmentObj.health_assessment.chemistryMatter"
-          >
-            <div class="flex-container gray product-harmful-header" style="line-height: 24px;">
-              <div class="flex-twoItem">产品组成</div>
-              <div class="flex-twoItem">组分名称</div>
-              <!-- <div class="flex-threeItem">制造商</div> -->
-              <div class="flex-twoItem">主要危害物质</div>
-            </div>
-            <div class="product-harmful-body-container">
-              <div
-                v-for="(supplierRohs,index) in healthAssessmentObj.health_assessment.chemistryMatter"
-                :key="index"
-                :style="{borderBottomWidth:index === (healthAssessmentObj.health_assessment.chemistryMatter.length - 1) ? '0' : '1'}"
-                v-if="supplierRohs.makeUp"
-                class="flex-container gray product-harmful-body"
-              >
-                <div class="flex-twoItem blue f13">{{supplierRohs.makeUp}}</div>
-                <div class="flex-twoItem">{{regHtml(supplierRohs.chemistryMatter)}}</div>
-
-                <div class="flex-twoItem">
-                  <span>{{supplierRohs.majorHazardousSubstances}}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- 定制产品 -->
-          <div class="pj-table-content" v-if="customEalthAssessmentObj && productType ==1">
-            <div class="pj-table-box customProduct">
-              <ul class="table-head el-row--flex" style="height: 40px;">
-                <li>组成部分</li>
-                <li>
-                  <div >认证&声明</div>
-                </li>
-                <li>健康危害标签</li>
-              </ul>
-              <el-collapse v-model="collapseIndex">
-                <el-collapse-item
-                  v-for="(item,index) in customEalthAssessmentObj"
-                  :key="index"
-                  :name="index"
-                >
-                  <template slot="title">
-                    <i class="el-collapse-item__arrow el-icon-arrow-right show"></i>
-                    {{index}}
-                  </template>
-                  <div
-                    class="pj-collapse-list "
-                    v-for="(items,index) in item.proComponentItems"
-                    :key="index"
-                  >
-                    <!-- <div class="fist-box">
-                      <div class="no-img"></div>
-                      <span>{{items.productSkuName}}</span>
-                    </div> -->
-                    <a
-                      class="customProduct-name"
-                      target="_blank"
-                      :href="locationUrl+items.childProductSkuID+'#/sweepCode'"
-                    >{{items.childProductSkuName}}</a>
-                    <!-- <span>{{items.categoryName}}</span> -->
-                    <span class="customProduct-imgs" style="align-items: center;justify-content: flex-start;display: flex;">
-                      <img
-                        style="height: 30px;width: auto;"
-                        v-for="logo in items.logos"
-                        :src="logo.certificateUrl"
-                        alt
-                      />
-                    </span>
-                    <span
-                      v-if="items.isExposure == 2 || items.isExposure == 3"
-                      class="customProduct-harm"
-                      @click="openProduct(items.childProductSkuID)"
-                    >点击查看</span>
-                    <span v-else style="color: #000">无</span>
-                  </div>
-                </el-collapse-item>
-              </el-collapse>
-            </div>
-          </div>
-          <!-- 复合产品 -->
-          <div class="pj-table-content" v-if="compositeObj && (productType ==3 || productType ==4)">
-            <div class="pj-table-box">
-              <ul class="table-head el-row--flex" style="height: 40px;">
-                <li>组成部分</li>
-                <li>
-                  <div >原材料</div>
-                </li>
-                <li>主要危害物质</li>
-                <li>
-                  <div >健康危害评价</div>
-                </li>
-                <li>检测报告</li>
-              </ul>
-
-              <div
-                v-if="
-                        compositeObj 
-                        && compositeObj.health_assessment 
-                        && compositeObj.health_assessment.chemistryMatterArray"
-                v-for="(item,index) in compositeObj.health_assessment.chemistryMatterArray"
-                :key="index"
-                :name="''+index"
-              >
-                <template slot="title">
-                  <i class="el-collapse-item__arrow el-icon-arrow-right show"></i>
-                  {{item.makeUp|| '无'}}
-                </template>
-                <div
-                  class="pj-collapse-list compositeList"
-                  v-for="(items,index) in item.childArray"
-                  :key="index"
-                >
-                  <div class="fist-box">
-                    <div class="no-img"></div>
-                    <span>{{items.makeUp}}</span>
-                  </div>
-                  <a class>{{items.chemistryMatter}}</a>
-                  <span>{{items.majorHazardousSubstances}}</span>
-                  <span
-                    class="pointer under-line-hover"
-                    style="align-items: center;justify-content: flex-start;display: flex;"
-                    v-if="items.proHazardAssessment"
-                    @click="showCompositeHealth(items.proHazardAssessment)"
-                  >点击查看</span>
-                  <span
-                    class
-                    style="color:#253858;align-items: center;justify-content: flex-start;display: flex;"
-                    v-else
-                  >无</span>
-                  <span
-                    class="pointer under-line-hover"
-                    v-if="items.url"
-                    @click="showIframe(items)"
-                  >点击查看</span>
-                  <span style="color:#253858;" v-else>无</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div id="product" class="module-box" v-else>
-      <div class="product-box">
-         <div class="title-box">
-        <div class="title-left">
-          <img style="width: 18px;height: 18px;" src="@/assets/image/icon_product.png" alt />
-          <p>产品组成</p>
-        </div>
-      </div>
-        <div class="product-nodata-container">
-          <!-- <img src="@/assets/image/icon_EmptyData.png" alt /> -->
-          当前暂不披露
-        </div>
-      </div>
-    </div>
-    <!-- 产品组成 -->
     <!--健康危害评价-->
     <!-- <div  v-if="isExposure == 2 || isExposure == 3" id="healthy" class="module-box" style="margin-top: 8px;">
       <div class="title-box">
@@ -338,8 +161,8 @@
           <div
             class="test-report-content"
             v-for="(harmfulPDFItem,harmfulPDFIndex) in harmfulPDFList"
-            v-if="harmfulPDFIndex < toShow"
-            @click="checkReport('report',harmfulPDFItem)"
+            :key="harmfulPDFIndex"
+            @click="showPdf(harmfulPDFItem.url)"
           >
             <img style="width: 12px;height: 17px;" src="../../static/images/PDF.png" alt />
             <p>{{harmfulPDFItem.name.substring(0,harmfulPDFItem.name.length - 4)}}</p>
@@ -355,23 +178,41 @@
           <img style="width: 16px;height: 20px;" src="../../static/images/certificate.png" alt />
           <p>认证/声明/检测</p>
         </div>
-        <div class="title-right" @click="navTo('certificate','name')">
-          <p style="margin-right: 5px;">查看更多</p>
-          <img style="width: 6px;height: 10px;" src="../../static/images/arrow-right.png" alt />
-        </div>
       </div>
       <div class="certificate-certification">
         <div
           class="certification-box"
-          v-for="(certificatesItem,certificatesIndex) in certificatesList"
-          v-if="certificatesIndex < toShow"
-          @click="checkReport('report',certificatesItem)"
+          v-for="(certificatesItem) in certificatesList"
+          @click="showPdf(certificatesItem.url)"
+          :key="certificatesItem.id"
         >
           <div>
             <img style="width: 32px;" :src="certificatesItem.certificateUrl" alt />
             <p>{{certificatesItem.certificateName}}</p>
           </div>
-          <p>有效期至：{{formatDateTime(certificatesItem.validityEnd)}}</p>
+        </div>
+        <div
+          class="certification-box"
+          v-for="(checkReportItem) in checkReportList"
+          :key="checkReportItem.id"
+          @click="showPdf(checkReportItem.url)"
+        >
+          <div>
+            <img style="width: 32px;" :src="checkReportItem.certificateUrl" alt />
+            <p>{{checkReportItem.certificateName}}</p>
+          </div>
+        </div>
+        <!-- 检测 -->
+        <div
+          class="certification-box"
+          v-for="(statementReportItem) in statementReportList"
+          :key="statementReportItem.id"
+          @click="showPdf(statementReportItem.url)"
+        >
+          <div>
+            <img style="width: 32px;" :src="statementReportItem.certificateUrl" alt />
+            <p>{{statementReportItem.certificateName}}</p>
+          </div>
         </div>
       </div>
     </div>
@@ -475,6 +316,354 @@
         </div>
       </div>
     </div>-->
+    <!-- 产品组成 -->
+    <div
+      id="product"
+      class="module-box"
+      v-if="productType == 1 || productType == 3 ||  productType == 4"
+    >
+      <div class="title-box">
+        <div class="title-left">
+          <img style="width: 18px;height: 18px;" src="@/assets/image/icon_product.png" alt />
+          <p>产品组成</p>
+        </div>
+      </div>
+      <div class="product-box">
+        <div class="product-box-container">
+          <!-- 产品注册 -->
+          <div
+            class="product-harmful-container navBarBox"
+            data-index="1"
+            v-if="healthAssessmentObj
+                  && healthAssessmentObj.health_assessment
+                  && healthAssessmentObj.health_assessment.chemistryMatter"
+          >
+            <div class="flex-container gray product-harmful-header" style="line-height: 24px;">
+              <div class="flex-twoItem">产品组成</div>
+              <div class="flex-twoItem">组分名称</div>
+              <!-- <div class="flex-threeItem">制造商</div> -->
+              <div class="flex-twoItem">主要危害物质</div>
+            </div>
+            <div class="product-harmful-body-container">
+              <div
+                v-for="(supplierRohs,index) in healthAssessmentObj.health_assessment.chemistryMatter"
+                :key="index"
+                :style="{borderBottomWidth:index === (healthAssessmentObj.health_assessment.chemistryMatter.length - 1) ? '0' : '1'}"
+                v-if="supplierRohs.makeUp"
+                class="flex-container gray product-harmful-body"
+              >
+                <div class="flex-twoItem blue f13">{{supplierRohs.makeUp}}</div>
+                <div class="flex-twoItem">{{regHtml(supplierRohs.chemistryMatter)}}</div>
+
+                <div class="flex-twoItem">
+                  <span>{{supplierRohs.majorHazardousSubstances}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- 定制产品 -->
+          <div class="pj-table-content" v-if="customEalthAssessmentObj && productType ==1">
+            <div class="pj-table-box customProduct">
+              <ul class="table-head el-row--flex" style="height: 40px;">
+                <li>组成部分</li>
+                <li>
+                  <div>认证&声明</div>
+                </li>
+                <li>健康危害标签</li>
+              </ul>
+              <el-collapse v-model="collapseIndex">
+                <el-collapse-item
+                  v-for="(item,index) in customEalthAssessmentObj"
+                  :key="index"
+                  :name="index"
+                >
+                  <template slot="title">
+                    <i class="el-collapse-item__arrow el-icon-arrow-right show"></i>
+                    {{index}}
+                  </template>
+                  <div
+                    class="pj-collapse-list"
+                    v-for="(items,index) in item.proComponentItems"
+                    :key="index"
+                  >
+                    <!-- <div class="fist-box">
+                      <div class="no-img"></div>
+                      <span>{{items.productSkuName}}</span>
+                    </div>-->
+                    <a
+                      class="customProduct-name"
+                      target="_blank"
+                      :href="locationUrl+items.childProductSkuID+'#/sweepCode'"
+                    >{{items.childProductSkuName}}</a>
+                    <!-- <span>{{items.categoryName}}</span> -->
+                    <span
+                      class="customProduct-imgs"
+                      style="align-items: center;justify-content: flex-start;display: flex;"
+                    >
+                      <img
+                        style="height: 30px;width: auto;"
+                        v-for="logo in items.logos"
+                        :src="logo.certificateUrl"
+                        alt
+                      />
+                    </span>
+                    <span
+                      v-if="items.isExposure == 2 || items.isExposure == 3"
+                      class="customProduct-harm blue"
+                      @click="openProduct(items)"
+                    >点击查看</span>
+                    <span v-else style="color: #000">无</span>
+                  </div>
+                </el-collapse-item>
+              </el-collapse>
+            </div>
+          </div>
+          <!-- 复合产品 -->
+          <!-- <div class="pj-table-content" v-if="compositeObj && (productType ==3 || productType ==4)">
+            <div class="pj-table-box">
+              <div class="table-head el-row--flex" style="height: 40px;">
+                <div>组成部分</div>
+                <div>原材料</div>
+                <div>主要危害物质</div>
+                <div>健康危害评价</div>
+                <div>检测报告</div>
+              </div>
+
+              <div
+                v-if="
+                        compositeObj 
+                        && compositeObj.health_assessment 
+                        && compositeObj.health_assessment.chemistryMatterArray"
+                v-for="(item,index) in compositeObj.health_assessment.chemistryMatterArray"
+                :key="index"
+                :name="''+index"
+              >
+                <template slot="title">
+                  <i class="el-collapse-item__arrow el-icon-arrow-right show"></i>
+                  {{item.makeUp|| '无'}}
+                </template>
+                <div
+                  class="pj-collapse-list compositeList"
+                  v-for="(items,index) in item.childArray"
+                  :key="index"
+                >
+                  <div class="fist-box">
+                    <div class="no-img"></div>
+                    <span>{{items.makeUp}}</span>
+                  </div>
+                  <a class>{{items.chemistryMatter}}</a>
+                  <span>{{items.majorHazardousSubstances}}</span>
+                  <span
+                    class="pointer under-line-hover"
+                    style="align-items: center;justify-content: flex-start;display: flex;"
+                    v-if="items.proHazardAssessment"
+                    @click="showCompositeHealth(items.proHazardAssessment)"
+                  >点击查看</span>
+                  <span
+                    class
+                    style="color:#253858;align-items: center;justify-content: flex-start;display: flex;"
+                    v-else
+                  >无</span>
+                  <span
+                    class="pointer under-line-hover"
+                    v-if="items.url"
+                    @click="showPdf(items.url)"
+                  >点击查看</span>
+                  <span style="color:#253858;" v-else>无</span>
+                </div>
+              </div>
+            </div>
+          </div>-->
+          <div v-if="compositeObj && (productType ==3 || productType ==4)">
+            <el-table :data="chemistryMatterArray" style="width: 100%">
+              <el-table-column fixed prop="makeUp" label="组成部分" width="80"></el-table-column>
+              <el-table-column prop="chemistryMatter" label="原材料" width="80"></el-table-column>
+              <el-table-column prop="majorHazardousSubstances" label="主要危害物质" width="150"></el-table-column>
+              <el-table-column label="健康危害评价" width="150">
+                <template slot-scope="scope">
+                  <span
+                    class="blue"
+                    style="align-items: center;justify-content: flex-start;display: flex;"
+                    v-if="scope.row.proHazardAssessment"
+                    @click="showCompositeHealth(scope.row.proHazardAssessment)"
+                  >点击查看</span>
+                  <span
+                    class
+                    style="color:#253858;align-items: center;justify-content: flex-start;display: flex;"
+                    v-else
+                  >无</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="检测报告" width="150">
+                <template slot-scope="scope">
+                  <span class="blue" v-if="scope.row.url" @click="showPdf(scope.row.url)">点击查看</span>
+                  <span style="color:#253858;" v-else>无</span>
+                </template>
+              </el-table-column>
+            </el-table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 产品组成 -->
+
+    <div class="module-box" v-if="productType == 2">
+      <div class="title-box">
+        <div class="title-left">
+          <img style="width: 18px;height: 18px;" src="@/assets/image/heart@2x.png" alt />
+          <p>健康危害评价</p>
+        </div>
+        <div class="title-right">
+          <img style="width: 14px;height: 14px;margin-right: 5px;" src="../../static/images/tip.png" alt="">
+          <p style="margin-right: 5px;" @click="navTo('productArticle','about','32','1')">了解如何评价</p>
+        </div>
+      </div>
+      <div
+        v-if="proHazardAssessmentList"
+        v-for="(proHazardAssessment,index) in proHazardAssessmentList"
+        v-bind:key="index"
+        class="health-flex-container-box"
+      >
+        <div class="health-flex-firstItem">
+          <div>评价对象</div>
+          <div>危害类别</div>
+          <div>危害等级</div>
+          <div>评价结果</div>
+        </div>
+        <div class="health-flex-container">
+          <div
+            class="health-flex-container-item"
+            style="border-right: 1px solid rgba(221,221,221,1);"
+            v-text="'评价对象'"
+          ></div>
+          <div
+            class="health-flex-container-item"
+            style="color:#253858;font-weight:bold;height: 37px;text-align: left;padding-left: 15px;"
+            v-text="proHazardAssessment.name"
+          ></div>
+        </div>
+        <div class="health-table-container">
+          <div class="flex-table-container table-title">
+            <div>
+              <p>危害类别</p>
+            </div>
+            <div>
+              <p>致癌性</p>
+            </div>
+            <div>
+              <p>生殖细胞</p>
+              <p>致突变性</p>
+            </div>
+            <div>
+              <p>生殖毒性</p>
+            </div>
+            <div>
+              <p>急性毒性</p>
+            </div>
+            <div>
+              <p>特异性靶</p>
+              <p>器官毒性</p>
+              <p>(一次接触)</p>
+            </div>
+            <div>
+              <p>皮肤腐蚀</p>
+              <p>/刺激性</p>
+            </div>
+            <div>
+              <p>严重眼损伤</p>
+              <p>/眼刺激</p>
+            </div>
+            <div>
+              <p>特异性靶</p>
+              <p>器官毒性</p>
+              <p>(反复接触)</p>
+            </div>
+            <div>
+              <p>皮肤致敏</p>
+            </div>
+            <div>
+              <p>呼吸道致敏</p>
+            </div>
+          </div>
+          <div class="flex-table-container fixed-height">
+            <div style="justify-content: center;display: flex;">
+              <span>危害等级</span>
+              <!-- <el-popover
+                placement="top"
+                width="300"
+                trigger="hover"
+                content="危害等级通常用vH、H、M、L、DG、N/A表示，其中vH代表危害等级极高，H代表危害等级高，M代表危害等级中等，L代表危害等级低，DG代表危害等级无法确定，N/A代表暂无该健康危害数据。"
+              >
+                <img
+                  slot="reference"
+                  style="width: 14px;margin-left: 6px;"
+                  src="@/assets/image/tip.png"
+                  alt
+                />
+              </el-popover>-->
+            </div>
+            <div>
+              <span v-text="proHazardAssessment.carcinogenicity"></span>
+            </div>
+            <div>
+              <span v-text="proHazardAssessment.germCellMutagenicity"></span>
+            </div>
+            <div>
+              <span v-text="proHazardAssessment.reproductiveToxicity"></span>
+            </div>
+            <div>
+              <span v-text="proHazardAssessment.acuteToxicity"></span>
+            </div>
+            <div>
+              <span v-text="proHazardAssessment.targetOrganToxicityOnce"></span>
+            </div>
+            <div>
+              <span v-text="proHazardAssessment.skinIrritation"></span>
+            </div>
+            <div>
+              <span v-text="proHazardAssessment.severeEyeInjury"></span>
+            </div>
+            <div>
+              <span v-text="proHazardAssessment.targetOrganToxicityRepeated"></span>
+            </div>
+            <div>
+              <span v-text="proHazardAssessment.skinSensitization"></span>
+            </div>
+            <div>
+              <span v-text="proHazardAssessment.respiratorySensitization"></span>
+            </div>
+          </div>
+          <div class="flex-table-container">
+            <div class="resultflex">
+              <span>评价结果</span>
+              <!-- <el-popover placement="top" width="300" trigger="hover">
+                <p>
+                  评价结果使用红、黄、绿三种颜色标识，来解读其健康危害程度，其中：
+                  <br />● 红色代表健康危害相对较高，在选材时应尽量避免该类材料，除非健康危害物质的含量在安全范围内；
+                  <br />● 黄色代表健康危害相对适中，可选择并使用，但为了更安全的居住环境，应寻找更环保的替代材料；
+                  <br />● 绿色代表健康危害相对较低，是比较安全的材料，可放心选用。
+                </p>
+                <img
+                  slot="reference"
+                  style="width: 14px;margin-left: 6px;"
+                  src="@/assets/image/tip.png"
+                  alt
+                />
+              </el-popover>-->
+            </div>
+            <div class="resultClass">
+              <div v-if="proHazardAssessment.harmfulLable == 'Green'" class="greenStyle"></div>
+              <div v-if="proHazardAssessment.harmfulLable == 'YellowDG'" class="yellowStyle"></div>
+              <div v-if="proHazardAssessment.harmfulLable == 'GreenDG'" class="greenStyle"></div>
+              <div v-if="proHazardAssessment.harmfulLable == 'RedDG'" class="redStyle"></div>
+              <div v-if="proHazardAssessment.harmfulLable == 'Yellow'" class="yellowStyle"></div>
+              <div v-if="proHazardAssessment.harmfulLable == 'Red'" class="redStyle"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 滚动表格 -->
+    </div>
     <!--点击进入公众号-->
     <!--产品信息弹窗-->
     <div @touchmove.prevent>
@@ -514,7 +703,8 @@
             <div style="width: calc(100% - 90px);">
               <p
                 class="product-model-text product-model-content"
-                v-for="factoryItem in productInfo.factory"
+                v-for="(factoryItem,factoryIndex) in productInfo.factory"
+                :key="factoryIndex"
               >{{factoryItem.name}}</p>
             </div>
           </div>
@@ -522,32 +712,154 @@
             <p>产品描述:</p>
             <p class="product-attribute-content" v-html="productInfo.desc"></p>
           </div>
-          <!-- <div style="display: flex;">
-            <p class="product-model-text product-model-title">原材料组成：</p>
-            <div
-              class="product-attribute-content"
-              style="width: calc(100% - 90px);"
-              v-if="healthAssessment.type === '2'"
-            >
-              <p
-                class="product-model-text product-model-content"
-                v-for="(model) in healthAssessment.modelList"
-              >{{model.chemistryMatter}}</p>
-            </div>
-            <div class="product-attribute-content" style="width: calc(100% - 90px);" v-else>
-              <p
-                class="product-model-text product-model-content"
-                style="color: #0052CCFF"
-                v-for="(model) in healthAssessment.modelList"
-                @click="toProduct(model.id)"
-              >{{model.chemistryMatter}}</p>
-            </div>
-          </div> -->
         </div>
       </mt-popup>
     </div>
     <!--产品信息弹窗-->
-
+    <!-- 健康危害评价 -->
+    <div class="health-popUp-container">
+      <mt-popup v-model="healthVisible" class="product-popup" lockScroll="true" position="bottom">
+        <div class="module-box">
+          <div class="title-box">
+            <div class="title-left">
+              <img style="width: 18px;height: 18px;" src="@/assets/image/heart@2x.png" alt />
+              <p>健康危害评价</p>
+            </div>
+            <div class="title-right">
+              <p style="margin-right: 5px;">了解更多评价</p>
+            </div>
+          </div>
+          <div v-if="proHazardAssessmentObj" class="health-flex-container-box">
+            <div class="health-flex-firstItem">
+              <div>评价对象</div>
+              <div>危害类别</div>
+              <div>危害等级</div>
+              <div>评价结果</div>
+            </div>
+            <div class="health-flex-container">
+              <div
+                class="health-flex-container-item"
+                style="border-right: 1px solid rgba(221,221,221,1);"
+                v-text="'评价对象'"
+              ></div>
+              <div
+                class="health-flex-container-item"
+                style="color:#253858;font-weight:bold;height: 37px;text-align: left;padding-left: 15px;"
+                v-text="proHazardAssessmentObj.name"
+              ></div>
+            </div>
+            <div class="health-table-container">
+              <div class="flex-table-container table-title">
+                <div>
+                  <p>危害类别</p>
+                </div>
+                <div>
+                  <p>致癌性</p>
+                </div>
+                <div>
+                  <p>生殖细胞</p>
+                  <p>致突变性</p>
+                </div>
+                <div>
+                  <p>生殖毒性</p>
+                </div>
+                <div>
+                  <p>急性毒性</p>
+                </div>
+                <div>
+                  <p>特异性靶</p>
+                  <p>器官毒性</p>
+                  <p>(一次接触)</p>
+                </div>
+                <div>
+                  <p>皮肤腐蚀</p>
+                  <p>/刺激性</p>
+                </div>
+                <div>
+                  <p>严重眼损伤</p>
+                  <p>/眼刺激</p>
+                </div>
+                <div>
+                  <p>特异性靶</p>
+                  <p>器官毒性</p>
+                  <p>(反复接触)</p>
+                </div>
+                <div>
+                  <p>皮肤致敏</p>
+                </div>
+                <div>
+                  <p>呼吸道致敏</p>
+                </div>
+              </div>
+              <div class="flex-table-container fixed-height">
+                <div style="justify-content: center;display: flex;">
+                  <span>危害等级</span>
+                </div>
+                <div>
+                  <span v-text="proHazardAssessmentObj.carcinogenicity"></span>
+                </div>
+                <div>
+                  <span v-text="proHazardAssessmentObj.germCellMutagenicity"></span>
+                </div>
+                <div>
+                  <span v-text="proHazardAssessmentObj.reproductiveToxicity"></span>
+                </div>
+                <div>
+                  <span v-text="proHazardAssessmentObj.acuteToxicity"></span>
+                </div>
+                <div>
+                  <span v-text="proHazardAssessmentObj.targetOrganToxicityOnce"></span>
+                </div>
+                <div>
+                  <span v-text="proHazardAssessmentObj.skinIrritation"></span>
+                </div>
+                <div>
+                  <span v-text="proHazardAssessmentObj.severeEyeInjury"></span>
+                </div>
+                <div>
+                  <span v-text="proHazardAssessmentObj.targetOrganToxicityRepeated"></span>
+                </div>
+                <div>
+                  <span v-text="proHazardAssessmentObj.skinSensitization"></span>
+                </div>
+                <div>
+                  <span v-text="proHazardAssessmentObj.respiratorySensitization"></span>
+                </div>
+              </div>
+              <div class="flex-table-container">
+                <div class="resultflex">
+                  <span>评价结果</span>
+                  <!-- <el-popover placement="top" width="300" trigger="hover">
+                <p>
+                  评价结果使用红、黄、绿三种颜色标识，来解读其健康危害程度，其中：
+                  <br />● 红色代表健康危害相对较高，在选材时应尽量避免该类材料，除非健康危害物质的含量在安全范围内；
+                  <br />● 黄色代表健康危害相对适中，可选择并使用，但为了更安全的居住环境，应寻找更环保的替代材料；
+                  <br />● 绿色代表健康危害相对较低，是比较安全的材料，可放心选用。
+                </p>
+                <img
+                  slot="reference"
+                  style="width: 14px;margin-left: 6px;"
+                  src="@/assets/image/tip.png"
+                  alt
+                />
+                  </el-popover>-->
+                </div>
+                <div class="resultClass">
+                  <div v-if="proHazardAssessmentObj.harmfulLable == 'Green'" class="greenStyle"></div>
+                  <div v-if="proHazardAssessmentObj.harmfulLable == 'YellowDG'" class="yellowStyle"></div>
+                  <div v-if="proHazardAssessmentObj.harmfulLable == 'GreenDG'" class="greenStyle"></div>
+                  <div v-if="proHazardAssessmentObj.harmfulLable == 'RedDG'" class="redStyle"></div>
+                  <div v-if="proHazardAssessmentObj.harmfulLable == 'Yellow'" class="yellowStyle"></div>
+                  <div v-if="proHazardAssessmentObj.harmfulLable == 'Red'" class="redStyle"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- 滚动表格 -->
+        </div>
+      </mt-popup>
+    </div>
+    <!-- 健康危害评价 -->
     <!-- 弹框容器 -->
 
     <div class="model-container" id="modal" v-show="showModelType">
@@ -696,10 +1008,10 @@ export default {
   name: "sweepCode",
   data() {
     return {
-       locationUrl:
-        location.origin +
-        location.pathname +
-        "/?skuId=",
+      proHazardAssessmentObj: "", //选中的危害健康对象
+      healthVisible: false, //是否显示健康危害资料
+      chemistryMatterArray: [], //复合材料数组
+      locationUrl: location.origin + location.pathname + "/?skuId=",
       collapseIndex: [],
       bannerList: [], // banner轮播图
       authenticationList: [
@@ -727,6 +1039,8 @@ export default {
       harmfulList: [], // 有害物质列表
       harmfulPDFList: [], // 有害物质PDF列表
       certificatesList: [], // 证书
+      checkReportList: [], //声明
+      statementReportList: [], //检测
       casesList: [], // 案例list
       videoList: [], // 视频list
       productInfo: {
@@ -781,6 +1095,7 @@ export default {
       ],
       isExposure: "", //是否披露0 不披露 1 只披露组分  2 披露组分及健康危害评价 3 只披露健康危害评价
       customEalthAssessmentObj: [], //定制产品对象
+      proHazardAssessmentList: [], //健康危害
       compositeObj: "", //复合材料对象
       productType: 2, //产品类型(1定制,2标准)
       navigationIndex: 0,
@@ -861,36 +1176,7 @@ export default {
         },
         err => {}
       );
-    } else {
-      _this.checklogin();
     }
-    // if ($(window).scrollTop() > 388) {
-    //   this.showNavigation = true;
-    // } else {
-    //   this.showNavigation = false;
-    // }
-    // this.scrollChange();
-    // var vibibleState = "";
-    // var visibleChange = "";
-
-    // if (typeof document.visibilityState != "undefined") {
-    //   visibleChange = "visibilitychange";
-    //   vibibleState = "visibilityState";
-    // } else if (typeof document.webkitVisibilityState != "undefined") {
-    //   visibleChange = "webkitvisibilitychange";
-    //   vibibleState = "webkitVisibilityState";
-    // }
-    // if (visibleChange) {
-    //   document.addEventListener(visibleChange, function(e) {
-    //     if (document[vibibleState] == "visible") {
-    //       _this.checklogin()
-    //     }
-    //   });
-    // }
-    // if(getStorage('scrollTop')){
-    //   document.documentElement.scrollTop = getStorage('scrollTop')
-    //   setStorage('scrollTop','')
-    // }
   },
   components: {},
   computed: {
@@ -922,7 +1208,48 @@ export default {
       }
       return list[index];
     },
+    showCompositeHealth(item) {
+      console.log(item);
+      this.healthVisible = true;
+      this.proHazardAssessmentObj = item;
+    },
+    openProduct(items){
+      location.href=this.locationUrl+items.childProductSkuID+'#/sweepCode'
+    },
+    showIframe(item) {
+      console.log(item);
+      if (item.name) {
+        this.pdfTitle = item.name;
+      } else if (item.certificateName) {
+        this.pdfTitle = item.certificateName;
+      } else if (item.fileName) {
+        this.pdfTitle = item.fileName;
+      }
+      $("#show-iframe").attr("src", "");
 
+      // window.open(item.url, "_blank");
+      // this.iframeSrc = item.url;
+      let Base64 = require("js-base64").Base64;
+      // this.iframeState = true;
+      console.log(item.url);
+      let newUrl = "";
+      if (item.url) {
+        console.log(item.url.split("com"));
+        if (item.url.split("com") && item.url.split("com")[1]) {
+          newUrl = item.url.split("com")[1];
+        } else {
+          newUrl =
+            "/viewFileOss.htm?ossFileKey=" + item.url + "&ossFileAuthType=prv";
+        }
+        console.log(newUrl);
+        // this.$router.push({ name: "pdf", query: { url: Base64.encode(newUrl) } });
+        let pdfUrl = location.origin + "/#/pdf?url=" + Base64.encode(newUrl);
+        // window.open(item.url,'_blank');
+        this.showHeight = document.documentElement.clientHeight - 300;
+        this.iframeState = true;
+        this.iframeSrc = pdfUrl;
+      }
+    },
     logined() {
       this.CHANGE_SUBSCRIBE(1);
     },
@@ -974,7 +1301,7 @@ export default {
     getCodeDetail() {
       let params = {};
       let that = this;
-      let _this  =this;
+      let _this = this;
       getProductBySkuId(this.skuId)
         .then(res => {
           console.log(res);
@@ -990,7 +1317,9 @@ export default {
             features,
             health_assessment,
             browserCount,
-            supplier
+            supplier,
+            checkReport,
+            statementReport
           } = res.products;
           let healthAssessment = {};
           that.browserCount = browserCount || 1; // 扫码次数
@@ -999,6 +1328,8 @@ export default {
           that.harmfulList = harmful.test || []; // 有害物质列表
           that.harmfulPDFList = harmful.test_report || []; // 有害物质PDF列表
           that.certificatesList = certificates; // 证书
+          that.checkReportList = checkReport;
+          that.statementReportList = statementReport;
           that.casesList = cases; // 案例list
           that.videoList = videos; // 视频list
           that.articlesList = articles; // 文章list
@@ -1032,81 +1363,100 @@ export default {
           // }
           that.isExposure = health_assessment.type;
           _this.productType = res.products.health_assessment.type;
-          // 如果为2位普通材料
-        if (res.products.health_assessment.type == 2) {
-          _this.healthAssessmentObj = res.products.health_assessment;
-          // if(_this.healthAssessmentObj
-          // && _this.healthAssessmentObj.health_assessment
-          // && _this.healthAssessmentObj.health_assessment.chemistryMatter){
-          //   //  _this.healthAssessmentObj.health_assessment.chemistryMatter =
-          // }
-        } else if (res.products.health_assessment.type == 3 || res.products.health_assessment.type == 4) {
-          // type 为3是复合材料
-          _this.compositeObj = res.products.health_assessment;
-          // for(let composite in _this.compositeObj.health_assessment.chemistryMatterArray){
-          //   this.compositeCollapseIndex.push(composite);
-          // }
-        } else if (res.products.health_assessment.type == 1) {
-          // type为1位定制材料
-          //  _this.customEalthAssessmentObj = res.products.health_assessment;
-          let health_assessment = res.products.health_assessment;
-
-          //  _this.projectProductItemList = health_assessment.projectProductItemList; //子产品列表
-          let templateArr = [];
-          let childComponent = [];
-          let proComponentList = health_assessment.proComponentExtJson;
-
+          // 健康危害评价获取
           if (
-            res &&
-            health_assessment.proCustomizeTemplate &&
-            health_assessment.proCustomizeTemplate[0] &&
-            health_assessment.proComponentList
+            res.products.health_assessment &&
+            res.products.health_assessment.proHazardAssessmentList
           ) {
-            // health_assessment.proCustomizeTemplate[0].componentNames = '门扇框架,门芯板,门套';//测试数据
-            templateArr = health_assessment.proCustomizeTemplate[0].componentNames.split(
-              ","
-            ); //模板组成
-            let templateObj = {};
-            let type = true;
-            for (let proTemplateArr of templateArr) {
-              if (type) {
-                _this.collapseIndex.push(proTemplateArr);
-                type = false;
-              }
-              templateObj[proTemplateArr] = templateObj[proTemplateArr] || {};
-              let templateAll = [];
-              for (let proComponent of proComponentList) {
-                childComponent = proComponent.comName; //模板组成
-                for (let component of childComponent) {
-                  if (proTemplateArr == component) {
-                    health_assessment.proComponentMaterialJson.map(
-                      (item, index) => {
-                        if (
-                          item.childProductSkuID ===
-                          proComponent.childProductSkuID
-                        ) {
-                          proComponent["categoryName"] = item.categoryName;
-                          proComponent["isExposure"] = item.isExposure;
-                          if (!proComponent["logos"]) {
-                            proComponent["logos"] = item.logos;
-                          } else {
-                            proComponent["logos"].concat(item.logos);
+            _this.proHazardAssessmentList =
+              res.products.health_assessment.proHazardAssessmentList;
+          } else {
+            _this.proHazardAssessmentList = [];
+          }
+          // 如果为2位普通材料
+          if (res.products.health_assessment.type == 2) {
+            _this.healthAssessmentObj = res.products.health_assessment;
+            // if(_this.healthAssessmentObj
+            // && _this.healthAssessmentObj.health_assessment
+            // && _this.healthAssessmentObj.health_assessment.chemistryMatter){
+            //   //  _this.healthAssessmentObj.health_assessment.chemistryMatter =
+            // }
+          } else if (
+            res.products.health_assessment.type == 3 ||
+            res.products.health_assessment.type == 4
+          ) {
+            // type 为3是复合材料
+            _this.compositeObj = res.products.health_assessment;
+            if (_this.compositeObj.health_assessment.chemistryMatterArray[0]) {
+              _this.chemistryMatterArray =
+                _this.compositeObj.health_assessment.chemistryMatterArray[0].childArray;
+            }
+            // for(let composite in _this.compositeObj.health_assessment.chemistryMatterArray){
+            //   this.compositeCollapseIndex.push(composite);
+            // }
+          } else if (res.products.health_assessment.type == 1) {
+            // type为1位定制材料
+            //  _this.customEalthAssessmentObj = res.products.health_assessment;
+            let health_assessment = res.products.health_assessment;
+
+            //  _this.projectProductItemList = health_assessment.projectProductItemList; //子产品列表
+            let templateArr = [];
+            let childComponent = [];
+            let proComponentList = health_assessment.proComponentExtJson;
+
+            if (
+              res &&
+              health_assessment.proCustomizeTemplate &&
+              health_assessment.proCustomizeTemplate[0] &&
+              health_assessment.proComponentList
+            ) {
+              // health_assessment.proCustomizeTemplate[0].componentNames = '门扇框架,门芯板,门套';//测试数据
+              templateArr = health_assessment.proCustomizeTemplate[0].componentNames.split(
+                ","
+              ); //模板组成
+              let templateObj = {};
+              let type = true;
+              for (let proTemplateArr of templateArr) {
+                if (type) {
+                  _this.collapseIndex.push(proTemplateArr);
+                  type = false;
+                }
+                templateObj[proTemplateArr] = templateObj[proTemplateArr] || {};
+                let templateAll = [];
+                for (let proComponent of proComponentList) {
+                  childComponent = proComponent.comName; //模板组成
+                  for (let component of childComponent) {
+                    if (proTemplateArr == component) {
+                      health_assessment.proComponentMaterialJson.map(
+                        (item, index) => {
+                          if (
+                            item.childProductSkuID ===
+                            proComponent.childProductSkuID
+                          ) {
+                            proComponent["categoryName"] = item.categoryName;
+                            proComponent["isExposure"] = item.isExposure;
+                            if (!proComponent["logos"]) {
+                              proComponent["logos"] = item.logos;
+                            } else {
+                              proComponent["logos"].concat(item.logos);
+                            }
                           }
                         }
-                      }
-                    );
-                    templateAll.push(proComponent);
-                    templateObj[proTemplateArr].proComponentItems = templateAll;
-                    templateObj[proTemplateArr].isActive = false;
-                    templateObj[proTemplateArr].templateName = proTemplateArr;
+                      );
+                      templateAll.push(proComponent);
+                      templateObj[
+                        proTemplateArr
+                      ].proComponentItems = templateAll;
+                      templateObj[proTemplateArr].isActive = false;
+                      templateObj[proTemplateArr].templateName = proTemplateArr;
+                    }
                   }
                 }
               }
+              console.log(templateObj);
+              _this.customEalthAssessmentObj = templateObj;
             }
-            console.log(templateObj);
-            _this.customEalthAssessmentObj = templateObj;
           }
-        } 
           that.healthAssessment = healthAssessment;
           // 初始化轮播图
           this.intSwpier();
@@ -1132,7 +1482,6 @@ export default {
               /<[^>]+>/g,
               ""
             ));
-          
         })
         .catch(err => console.log(err));
     },
@@ -1272,8 +1621,21 @@ export default {
     showPdf(url) {
       this.recordScroll();
       console.log("url", url);
-      let newUrl = url.split("com")[1];
+      // let newUrl = url.split("com")[1];
+      console.log(url);
+      let newUrl = "";
+      if (url) {
+        console.log(url.split("com"));
+        if (url.split("com") && url.split("com")[1]) {
+          newUrl = url.split("com")[1];
+        } else {
+          newUrl =
+            "/viewFileOss.htm?ossFileKey=" +
+            url +
+            "&ossFileAuthType=prv";
+        }
       this.$router.push({ name: "pdf", query: { url: Base64.encode(newUrl) } });
+      }
     },
 
     changeColor(color) {
@@ -1451,11 +1813,34 @@ export default {
 <style scoped  lang="scss">
 @import "../style/common";
 @import "../style/mixin";
-/deep/ .el-row--flex{
+#scrollBox{
+  padding-bottom: 40px;
+}
+/deep/ .el-row--flex {
   display: flex;
 }
-/deep/ .el-collapse{
+/deep/ .el-collapse {
   padding: 0 10px;
+}
+/deep/ .mint-popup p {
+  border-top: 0;
+}
+/deep/ .el-table__body, .el-table__footer, .el-table__header{
+  color: #101d37;
+}
+/deep/ thead th,
+thead tr {
+  background: #f0f2f5;
+}
+/deep/ .el-table__body-wrapper~.el-table__fixed{
+  box-shadow: 0 0 2.415vw rgba(0,0,0,.12);
+  th:nth-of-type(1) div,.el-table__row td:nth-of-type(1) div{
+    font-weight: bold;
+    font-size: 16px;
+  }
+}
+.blue {
+  color: #0052cc;
 }
 .container {
   background-color: #ecf1fb;
@@ -1487,7 +1872,6 @@ export default {
   width: 172px;
   height: 25px;
   font-size: 18px;
-  font-family: PingFang SC;
   font-weight: 300;
   line-height: 6.4vw;
   color: rgba(255, 255, 255, 1);
@@ -1518,7 +1902,6 @@ export default {
 }
 .authentication-icon-box p {
   font-size: 12px;
-  font-family: PingFang SC;
   font-weight: 400;
   color: rgba(66, 82, 110, 1);
 }
@@ -1540,7 +1923,6 @@ export default {
   width: 200px;
   height: 28px;
   font-size: 20px;
-  font-family: PingFang SC;
   font-weight: bold;
   line-height: 28px;
   color: rgba(16, 29, 55, 1);
@@ -1573,7 +1955,6 @@ export default {
 }
 .from-header p {
   font-size: 13px;
-  font-family: PingFang SC;
   font-weight: 400;
   line-height: 18px;
   color: rgba(155, 161, 170, 1);
@@ -1588,14 +1969,12 @@ export default {
 .from-content > p:nth-child(1) {
   width: 143px;
   font-size: 15px;
-  font-family: PingFang SC;
   font-weight: 400;
   line-height: 21px;
   color: rgba(16, 29, 55, 1);
 }
 .from-content > p:nth-child(2) {
   color: #101d37;
-  font-family: PingFang SC;
   font-weight: 400;
   line-height: 16px;
   font-size: 14px;
@@ -1603,7 +1982,6 @@ export default {
 }
 .from-content > p:nth-child(3) {
   color: #101d37;
-  font-family: PingFang SC;
   font-weight: 400;
   line-height: 16px;
   font-size: 14px;
@@ -1611,10 +1989,9 @@ export default {
 }
 .from-content > p:nth-child(4) {
   color: #101d37;
-  font-family: PingFang SC;
   font-weight: 400;
   line-height: 16px;
-  font-size: 11px;
+  font-size: 14px;
   width: 35px;
 }
 .test-report-box {
@@ -1635,7 +2012,6 @@ export default {
 .test-report-title > p {
   height: 17px;
   font-size: 12px;
-  font-family: PingFang SC;
   font-weight: 400;
   line-height: 17px;
   color: rgba(168, 173, 185, 1);
@@ -1658,7 +2034,7 @@ export default {
   height: 46px;
   background: rgba(255, 255, 255, 1);
   border: 1px solid rgba(229, 232, 237, 1);
-  box-shadow: 0px 1px 3px rgba(3, 27, 78, 0.1);
+  // box-shadow: 0px 1px 3px rgba(3, 27, 78, 0.1);
   border-radius: 4px;
   justify-content: space-between;
   padding: 0px 10px;
@@ -1666,7 +2042,6 @@ export default {
 }
 .certification-box > p {
   font-size: 12px;
-  font-family: PingFang SC;
   font-weight: 400;
   line-height: 17px;
   color: rgba(168, 173, 185, 1);
@@ -1679,7 +2054,6 @@ export default {
 .certification-box > div > p {
   margin-left: 12px;
   font-size: 15px;
-  font-family: PingFang SC;
   font-weight: 400;
   line-height: 21px;
   color: rgba(16, 29, 55, 1);
@@ -1726,8 +2100,8 @@ export default {
   border-top: 0px !important;
 }
 .product-popup {
-  height: 450px;
-  border-radius: 10px 10px 0px 0px;
+  min-height: 250px;
+  // border-radius: 10px 10px 0px 0px;
 }
 .model-product-info {
   height: 44px;
@@ -1740,7 +2114,6 @@ export default {
 }
 .model-product-info p {
   font-size: 18px;
-  font-family: PingFang SC;
   font-weight: bold;
   line-height: 25px;
   color: rgba(16, 29, 55, 1);
@@ -1777,7 +2150,6 @@ export default {
 .relevant-video p {
   margin: 5px 0px;
   font-size: 14px;
-  font-family: PingFang SC;
   font-weight: 400;
   line-height: 20px;
   color: rgba(16, 29, 55, 1);
@@ -1818,7 +2190,6 @@ export default {
   text-overflow: ellipsis;
   width: calc(100% - 10px);
   font-size: 14px;
-  font-family: PingFang SC;
   font-weight: 400;
   line-height: 20px;
   color: rgba(255, 255, 255, 1);
@@ -1836,7 +2207,6 @@ export default {
 .user-number p {
   width: auto;
   font-weight: 400;
-  font-family: PingFang SC;
   height: auto;
 }
 .user-number p:nth-child(1) {
@@ -1876,7 +2246,6 @@ export default {
 .healthy-content > div > p {
   height: 21px;
   font-size: 15px;
-  font-family: PingFang SC;
   font-weight: bold;
   line-height: 16px;
   color: rgba(0, 82, 204, 1);
@@ -1893,7 +2262,6 @@ export default {
 .healthy-notes {
   padding: 20px 15px 15px;
   font-size: 12px;
-  font-family: PingFang SC;
   font-weight: 400;
   line-height: 20px;
   color: rgba(168, 173, 185, 1);
@@ -2023,7 +2391,6 @@ export default {
 }
 .product-info-child-box span {
   font-size: 15px;
-  font-family: PingFang SC;
   font-weight: 400;
   line-height: 21px;
   color: rgba(16, 29, 55, 1);
@@ -2065,7 +2432,6 @@ export default {
   white-space: nowrap;
   padding: 11px 15px;
   font-size: 15px;
-  font-family: PingFang SC;
   font-weight: 400;
   line-height: 21px;
   color: rgba(51, 51, 51, 1);
@@ -2102,7 +2468,6 @@ export default {
 }
 .navigation-box p {
   font-size: 12px;
-  font-family: PingFang SC;
   font-weight: 400;
   line-height: 30px;
   color: rgba(66, 82, 110, 1);
@@ -2151,156 +2516,357 @@ export default {
   font-weight: 400;
   color: #acb4c6;
 }
-  .pj-table-content {
-    h4 {
-      font-weight: 500;
-      font-size: 16px;
-      color: #253858;
-      margin-bottom: 15px;
-    }
-    .pj-table-box {
-      border: 1px solid #dddddd;
-    }
-    ul {
+.pj-table-content {
+  h4 {
+    font-weight: 500;
+    font-size: 16px;
+    color: #253858;
+    margin-bottom: 15px;
+  }
+  .pj-table-box {
+    border: 1px solid #dddddd;
+    .table-head {
       background: #f0f2f5;
       height: 54px;
       line-height: 54px;
       padding: 0;
       margin: 0;
-      li {
+      display: flex;
+      overflow: auto;
+      flex-flow: row nowrap;
+      div {
         text-indent: 0px;
         list-style: none;
         color: #6d7b99;
         font-size: 14px;
-        width: 14%;
-        display: flex;
+        // display: flex;
+        flex: 0 0 200px;
         align-items: center;
-      }
-      li:nth-child(1) {
-        text-indent: 20px;
-        width: 15%;
-      }
-      li:nth-child(2) {
-        width: 30%;
-      }
-      li:nth-child(3) {
-        width: 15%;
-      }
-      li:nth-child(4) {
-        width: 25%;
-      }
-      li:nth-child(5) {
-        width: 15%;
-      }
-    }
-
-    
-    .pj-collapse-list {
-      height: auto;
-      border-top: 1px solid #ebeef5;
-      line-height: 40px;
-      display: flex;
-      align-items: center;
-      .fist-box {
-        width: 15%;
-        display: flex;
-        height: 100%;
-        align-items: center;
-        padding-left: 10px;
-        span,
-        a {
-          width: auto;
-          display: inline-block;
-          padding-left: 10px;
-        }
-      }
-      img {
-        width: 100px;
-        display: inline-block;
-      }
-      img.icon {
-        width: 18px;
-        display: inline-block;
-        margin-left: 25px;
-        opacity: 0.8;
-        cursor: pointer;
-        &:hover {
-          opacity: 1;
-        }
-      }
-      span {
-        color: #253858;
-        font-size: 14px;
-        line-height: 1.8;
-        width: 14%;
-        display: inline-block;
-        padding-left: 20px;
-      }
-      span:nth-child(2) {
-        width: 30%;
-      }
-      a {
-        width: 30%;
-        color: #0052cc;
-        font-size: 14px;
-      }
-      span:nth-child(3) {
-        padding: 0;
-        width: 15%;
-      }
-      span:nth-child(4) {
-        padding: 0;
-        width: 25%;
-      }
-      span:nth-child(5) {
-        color: #0052cc;
-      }
-    }
-    .compositeList {
-      a {
-        // cursor: ;
-        color: #253858;
-      }
-      span {
-        padding-left: 0px;
-      }
-      span:nth-child(2) {
-        width: auto;
-      }
-      span:nth-child(4) {
-        color: #0052cc;
-      }
-    }
-    .customProduct{
-       li:nth-child(1) {
-        text-indent: 20px;
-        width: 35%;
-      }
-      li:nth-child(2) {
-        width: 30%;
-      }
-      li:nth-child(3) {
-        width: 35%;
-        justify-content: center;
-      }
-      .flex-item{
-        flex:1;
-      }
-      .customProduct-name{
-        width: 35%;
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-      }
-      .customProduct-harm{
-        width: 30%;
-      }
-      span:nth-child(3) {
-        width: 35%;
-        justify-content: center;
-        text-align: center;
       }
     }
   }
+  ul {
+    background: #f0f2f5;
+    height: 54px;
+    line-height: 54px;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    overflow: auto;
+    flex-flow: row nowrap;
+    li {
+      text-indent: 0px;
+      list-style: none;
+      color: #6d7b99;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+    }
+    li:nth-child(1) {
+      text-indent: 20px;
+      width: 200px;
+    }
+    li:nth-child(2) {
+      width: 200px;
+    }
+    li:nth-child(3) {
+      width: 200px;
+    }
+    li:nth-child(4) {
+      width: 200px;
+    }
+    li:nth-child(5) {
+      width: 200px;
+    }
+  }
 
+  .pj-collapse-list {
+    height: auto;
+    border-top: 1px solid #ebeef5;
+    line-height: 40px;
+    display: flex;
+    align-items: center;
+    .fist-box {
+      width: 15%;
+      display: flex;
+      height: 100%;
+      align-items: center;
+      padding-left: 10px;
+      span,
+      a {
+        width: auto;
+        display: inline-block;
+        padding-left: 10px;
+      }
+    }
+    img {
+      width: 100px;
+      display: inline-block;
+    }
+    img.icon {
+      width: 18px;
+      display: inline-block;
+      margin-left: 25px;
+      opacity: 0.8;
+      cursor: pointer;
+      &:hover {
+        opacity: 1;
+      }
+    }
+    span {
+      color: #253858;
+      font-size: 14px;
+      line-height: 1.8;
+      width: 14%;
+      display: inline-block;
+      padding-left: 20px;
+    }
+    span:nth-child(2) {
+      width: 30%;
+    }
+    a {
+      width: 30%;
+      color: #0052cc;
+      font-size: 14px;
+    }
+    span:nth-child(3) {
+      padding: 0;
+      width: 15%;
+    }
+    span:nth-child(4) {
+      padding: 0;
+      width: 25%;
+    }
+    span:nth-child(5) {
+      color: #0052cc;
+    }
+  }
+  .compositeList {
+    a {
+      // cursor: ;
+      color: #253858;
+    }
+    span {
+      padding-left: 0px;
+    }
+    span:nth-child(2) {
+      width: auto;
+    }
+    span:nth-child(4) {
+      color: #0052cc;
+    }
+  }
+  .customProduct {
+    li:nth-child(1) {
+      text-indent: 20px;
+      width: 35%;
+    }
+    li:nth-child(2) {
+      width: 30%;
+    }
+    li:nth-child(3) {
+      width: 35%;
+      justify-content: center;
+    }
+    .flex-item {
+      flex: 1;
+    }
+    .customProduct-name {
+      width: 35%;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+    .customProduct-harm {
+      width: 30%;
+      color: #0052cc;
+    }
+    span:nth-child(3) {
+      width: 35%;
+      justify-content: center;
+      text-align: center;
+    }
+  }
+}
+.health-flex-container-box {
+  // margin-left: 15px;
+  padding-bottom: 15px;
+  margin-bottom: 20px;
+  position: relative;
+  font-size: 14px;
+  font-weight: bold;
+  .health-flex-firstItem {
+    box-shadow: 0 0 2.415vw rgba(0,0,0,.12);
+    position: absolute;
+    display: flex;
+    flex-flow: column nowrap;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    div {
+      width: 80px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #fff;
+      border: 1px solid rgba(221, 221, 221, 1);
+      border-right-width: 0px;
+      // font-size: 16px;
+      font-weight: bold;
+      color: #101d37;
+    }
+    div:nth-child(1) {
+      background: #e4eef6;
+      height: 35px;
+    }
+    div:nth-child(2) {
+      height: 69px;
+      border-top-width: 0px;
+      border-bottom-width: 0px;
+    }
+    div:nth-child(3) {
+      height: 35px;
+      border-bottom-width: 0px;
+    }
+    div:nth-child(4) {
+      height: 35px;
+      // border-top-width: 0px;
+      border-bottom-width: 0px;
+    }
+  }
+}
+.health-flex-container {
+  display: flex;
+  position: relative;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  background: rgba(228, 238, 246, 1);
+  height: 35px;
+  line-height: 35px;
+  color: #9ba1aa;
+  font-size: 14px;
+  font-family: Microsoft YaHei;
+  font-weight: 400;
+  color: rgba(109, 123, 153, 1);
+  border: 1px solid rgba(221, 221, 221, 1);
+  & > div:nth-child(1) {
+    text-align: center;
+    flex: 0 0 80px;
+    justify-content: center;
+  }
+  & > div:nth-child(2) {
+    text-align: center;
+    flex: 0 0 16px;
+  }
+}
+.health-table-container {
+  font-size: 14px;
+  border-right: 1px solid rgba(221, 221, 221, 1);
+  overflow: auto;
+}
+.flex-table-container {
+  display: flex;
+  position: relative;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  & > div {
+    text-align: center;
+    padding: 10px 0;
+    flex: 0 0 80px;
+    border: 1px solid rgba(221, 221, 221, 1);
+    border-top-width: 0px;
+    border-right-width: 0px;
+    color: rgba(37, 56, 88, 1);
+  }
+  & > div.flex-table-item {
+    width: 100px;
+    flex-shrink: 0;
+  }
+  & > div.resultClass {
+    flex: 0 0 800px;
+    height: 35px;
+  }
+  & > div.resultflex {
+    height: 35px;
+    justify-content: center;
+    display: flex;
+  }
+  > div:nth-child(1) {
+    font-size: 14px;
+    font-family: Microsoft YaHei;
+    font-weight: 400;
+    color: rgba(109, 123, 153, 1);
+    width: 80px;
+  }
+  p {
+    margin: 0px;
+  }
+}
+.flex-container {
+  display: flex;
+  position: relative;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 10px 15px 10px 15px;
+  .health-table-title {
+    width: 100px;
+  }
+  .flex-item {
+    flex: 1;
+    text-align: center;
+  }
+  .flex-threeItem {
+    flex: 0 0 50%;
+  }
+  .flex-twoItem {
+    font-size: 14px;
+    flex: 2;
+  }
+}
+.table-title {
+  div {
+    height: 70px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}
+.fixed-height {
+  div {
+    height: 35px;
+  }
+}
+.greenStyle {
+  background: #36b37e;
+  padding: 5px;
+  border-radius: 2px;
+  color: #fff;
+  height: 20px;
+  width: 88%;
+  text-align: center;
+  display: inline-block;
+}
+.yellowStyle {
+  background: #ffab00;
+  padding: 5px;
+  border-radius: 2px;
+  color: #fff;
+  height: 20px;
+  width: 88%;
+  text-align: center;
+  display: inline-block;
+}
+.redStyle {
+  background: #f75354;
+  padding: 5px;
+  border-radius: 2px;
+  color: #fff;
+  height: 20px;
+  width: 88%;
+  text-align: center;
+  display: inline-block;
+}
 </style>

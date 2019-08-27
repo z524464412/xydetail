@@ -33,7 +33,7 @@
           <p>本报告由</p><p @click="showInstitutions" style="color: #0052CC;padding: 0px 6px;">第三方检测机构</p><p>独立上传</p>
         </div>
         <div class="scroll-box">
-          <div class="test-report-content" v-for="harmfulPDFItem in harmfulPDFList" @click="checkReport('report',harmfulPDFItem)">
+          <div class="test-report-content" v-for="harmfulPDFItem in harmfulPDFList" @click="showPdf(harmfulPDFItem.url)">
             <img style="width: 12px;height: 17px;" src="../../../static/images/PDF.png" alt="">
             <p>{{harmfulPDFItem.name.substring(0,harmfulPDFItem.name.length - 4)}}</p>
           </div>

@@ -280,7 +280,6 @@ export default {
     }
     > p:nth-child(3) {
       font-size: 12px;
-      font-family: PingFang SC;
       font-weight: 400;
       line-height: 17px;
       color: rgba(122, 130, 143, 1);
@@ -306,7 +305,6 @@ export default {
       line-height: 16px;
       margin-left: 10px;
       font-size: 16px;
-      font-family: PingFang SC;
       font-weight: 400;
       color: rgba(16, 29, 55, 1);
       span {
@@ -336,7 +334,6 @@ export default {
     }
     p:nth-child(2) {
       font-size: 16px;
-      font-family: PingFang SC;
       font-weight: 400;
       line-height: 31px;
       color: rgba(16, 29, 55, 1);
@@ -364,7 +361,6 @@ export default {
   width: 172px;
   height: 25px;
   font-size: 18px;
-  font-family: PingFang SC;
   font-weight: 300;
   line-height: 6.4vw;
   color: rgba(255, 255, 255, 1);

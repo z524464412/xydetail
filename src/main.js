@@ -6,7 +6,8 @@ import App from './App'
 import router from './router'
 import store from './store/'
 import FastClick from 'fastclick'
-import { Collapse, CollapseItem } from 'element-ui';
+import { Collapse, CollapseItem, Table,
+  TableColumn, } from 'element-ui';
 
 
 import 'mint-ui/lib/style.css'
@@ -21,6 +22,8 @@ Vue.use(MintUI);
 Vue.use(vmodal);
 Vue.use(Collapse);
 Vue.use(CollapseItem)
+Vue.use(Table);
+Vue.use(TableColumn);
 
 Vue.directive('anchor',{
   inserted : function(el,binding){
