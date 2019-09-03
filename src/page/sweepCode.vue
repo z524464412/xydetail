@@ -320,8 +320,7 @@
     <div
       id="product"
       class="module-box"
-      v-if="productType == 1 || productType == 3 ||  productType == 4"
-    >
+      v-if="productType == 1 || productType == 3 ||  productType == 4">
       <div class="title-box">
         <div class="title-left">
           <img style="width: 18px;height: 18px;" src="@/assets/image/icon_product.png" alt />
@@ -476,10 +475,10 @@
           </div>-->
           <div v-if="compositeObj && (productType ==3 || productType ==4)">
             <el-table :data="chemistryMatterArray" style="width: 100%">
-              <el-table-column fixed prop="makeUp" label="组成部分" width="80"></el-table-column>
-              <el-table-column prop="chemistryMatter" label="原材料" width="80"></el-table-column>
-              <el-table-column prop="majorHazardousSubstances" label="主要危害物质" width="150"></el-table-column>
-              <el-table-column label="健康危害评价" width="150">
+              <el-table-column fixed prop="makeUp" label="组成部分" width="100"></el-table-column>
+              <el-table-column prop="chemistryMatter" label="原材料" width="120"></el-table-column>
+              <el-table-column prop="majorHazardousSubstances" label="主要危害物质" width="100"></el-table-column>
+              <el-table-column label="健康危害评价" width="100">
                 <template slot-scope="scope">
                   <span
                     class="blue"
@@ -494,7 +493,7 @@
                   >无</span>
                 </template>
               </el-table-column>
-              <el-table-column label="检测报告" width="150">
+              <el-table-column label="检测报告" width="100">
                 <template slot-scope="scope">
                   <span class="blue" v-if="scope.row.url" @click="showPdf(scope.row.url)">点击查看</span>
                   <span style="color:#253858;" v-else>无</span>
@@ -538,7 +537,7 @@
           ></div>
           <div
             class="health-flex-container-item"
-            style="color:#253858;font-weight:bold;height: 37px;text-align: left;padding-left: 15px;"
+            style="color:#253858;font-weight:bold;height: 30px;text-align: left;padding-left: 15px;"
             v-text="proHazardAssessment.name"
           ></div>
         </div>
@@ -934,7 +933,7 @@ var ModalHelper = (function(bodyCls) {
     }
   };
 })("modal-open");
-import { mapMutations } from "vuex";
+import {mapState, mapMutations } from "vuex";
 import Swiper from "swiper";
 import "swiper/dist/css/swiper.min.css";
 import {
@@ -1071,7 +1070,10 @@ export default {
         "background-color:#f3f5f9;background:#f3f5f9;scroll-behavior: smooth;"
       );
   },
+
+ 
   mounted() {
+    console.log(this.subscribe)
     let _this = this;
     let code = getQueryStringByName("c");
     let shuId = getQueryStringByName("skuId");
@@ -1210,7 +1212,7 @@ export default {
       }
     },
     logined() {
-      this.CHANGE_SUBSCRIBE(1);
+      this.CHANGE_SUBSCRIBE(0);
     },
 
     /**
@@ -1284,8 +1286,13 @@ export default {
           that.browserCount = browserCount || 1; // 扫码次数
           that.bannerList = pictures; // banner轮播图
           that.toShow = item_to_show; // 最多显示
-          that.harmfulList = harmful.test || []; // 有害物质列表
-          that.harmfulPDFList = harmful.test_report || []; // 有害物质PDF列表
+          if(harmful){
+            that.harmfulList = harmful.test ; // 有害物质列表
+            that.harmfulPDFList = harmful.test_report ; // 有害物质PDF列表
+          }else{
+            that.harmfulList =  []; // 有害物质列表
+            that.harmfulPDFList =  []; // 有害物质PDF列表
+          }
           that.certificatesList = certificates; // 证书
           that.checkReportList = checkReport;
           that.statementReportList = statementReport;
@@ -1322,6 +1329,7 @@ export default {
           // }
           that.isExposure = health_assessment.type;
           _this.productType = res.products.health_assessment.type;
+          console.log(_this.productType,res.products.health_assessment.type)
           // 健康危害评价获取
           if (
             res.products.health_assessment &&

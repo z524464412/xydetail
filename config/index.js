@@ -12,8 +12,8 @@ module.exports = {
     proxyTable: {
       '/api': {
         // target: 'https://xy.materialcircle.com',//接口域名
-        target: 'https://test.materialcircle.com',//接口域名
-        // target: 'http://10.1.11.133:8080',//接口域名
+        // target: 'https://test.materialcircle.com',//接口域名
+        target: 'http://10.1.11.135:8080',//接口域名
         // target: 'http://10.1.11.145:8080',//接口域名
         // target: 'http://localhost:8009',//接口域名
         changeOrigin: true,//是否跨域
@@ -22,9 +22,9 @@ module.exports = {
         }
       },
       '/vip': {
-        target: 'https://xy.materialcircle.com',//接口域名
+        // target: 'https://xy.materialcircle.com',//接口域名
         // target: 'https://test.materialcircle.com',//接口域名
-        // target: 'http://10.1.11.133:8080',//接口域名
+        target: 'http://10.1.11.135:8080',//接口域名
         // target: 'http://10.1.11.145:8080',//接口域名
         changeOrigin: true,//是否跨域
         pathRewrite: {

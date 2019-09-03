@@ -29,10 +29,15 @@
                 <!--<p>{{item.productPictureList}}</p>-->
                 <p>{{item.projectProductItem.productName}}</p>
                 <p>{{item.projectProductItem.productSkuSpec}}</p>
-                <p v-if="(item.proHazardAssessmentList && item.proHazardAssessmentList.length > 0) && (item.proHazardAssessmentList[0].harmfulLable == 'Red' || item.proHazardAssessmentList[0].harmfulLable == 'RedDG')" class="red" >健康危害评价</p>
-                <p v-else-if="(item.proHazardAssessmentList && item.proHazardAssessmentList.length > 0) && (item.proHazardAssessmentList[0].harmfulLable == 'Yellow' || item.proHazardAssessmentList[0].harmfulLable == 'YellowDG')" class="yellow" >健康危害评价</p>
-                <p v-else-if="(item.proHazardAssessmentList && item.proHazardAssessmentList.length > 0) && item.proHazardAssessmentList[0].harmfulLable == 'Green'" class="green" >健康危害评价</p>
-                <p v-else></p>
+                <template v-if="item.type == 2">
+                  <p v-if="(item.proHazardAssessmentList && item.proHazardAssessmentList.length > 0) && (item.proHazardAssessmentList[0].harmfulLable == 'Red' || item.proHazardAssessmentList[0].harmfulLable == 'RedDG')" class="red" >健康危害评价</p>
+                  <p v-else-if="(item.proHazardAssessmentList && item.proHazardAssessmentList.length > 0) && (item.proHazardAssessmentList[0].harmfulLable == 'Yellow' || item.proHazardAssessmentList[0].harmfulLable == 'YellowDG')" class="yellow" >健康危害评价</p>
+                  <p v-else-if="(item.proHazardAssessmentList && item.proHazardAssessmentList.length > 0) && item.proHazardAssessmentList[0].harmfulLable == 'Green'" class="green" >健康危害评价</p>
+                  <p v-else></p>
+                </template>
+                <template v-else>
+                    <p style="text-align:left;padding:0;">-</p>
+                </template>
               </div>
             </div>
             <i class="mint-toast-icon mintui mintui-back"></i>
